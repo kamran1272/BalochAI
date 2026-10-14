@@ -1,0 +1,109 @@
+name: Build Baloch APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android platform 34 + build-tools
+        run: |
+          yes | sdkmanager --licenses > /dev/null
+          sdkmanager "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Restore launcher icons from packed JSON
+        run: |
+          python3 - <<'EOF'
+          import json, base64, os
+          with open('assets/icons.b64.json') as f:
+              d = json.load(f)
+          for path, b64 in d.items():
+              os.makedirs(os.path.dirname(path), exist_ok=True)
+              with open(path, 'wb') as out:
+                  out.write(base64.b64decode(b64))
+          print('restored', len(d), 'icon files')
+          EOF
+
+      - name: Fetch README visuals (fault-tolerant)
+        continue-on-error: true
+        run: |
+          mkdir -p docs/images
+          curl -sL --max-time 120 "https://muse.ai/files/1277978102076545/2118467388877338/qygu82e8jddr1msx8p8ochk9/logo-obsidian-cube.webp" -o docs/images/logo-obsidian-cube.webp || true
+          curl -sL --max-time 120 "https://muse.ai/files/1277978102076545/1119993763755772/w4y70ybqv9jcobr6fx0d5785/ui-splash.webp" -o docs/images/ui-splash.webp || true
+          curl -sL --max-time 120 "https://muse.ai/files/1277978102076545/1648126910385945/c6furu74xjarandpvct5r4z4/ui-main.webp" -o docs/images/ui-main.webp || true
+          curl -sL --max-time 120 "https://muse.ai/files/1277978102076545/1648256176836531/eojnpo2lmxq0xycoi7c05w26/ui-settings.webp" -o docs/images/ui-settings.webp || true
+          curl -sL --max-time 120 "https://muse.ai/files/1277978102076545/4465091963750995/wb3ox6ejvrra3mv54po0se7c/ui-memory.webp" -o docs/images/ui-memory.webp || true
+          curl -sL --max-time 300 "https://muse.ai/files/1277978102076545/1050236558034460/2tlc6e406mlupu9osf31awmw/baloch-showcase.mp4" -o docs/images/baloch-showcase.mp4 || true
+          ls -la docs/images/ || true
+
+      - name: Generate animated GIFs (fault-tolerant)
+        continue-on-error: true
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null 2>&1 || true
+          for n in ui-splash ui-main ui-settings ui-memory; do
+            if [ -f "docs/images/$n.webp" ]; then
+              ffmpeg -y -v error -loop 1 -i docs/images/$n.webp \
+                -vf "scale=320:-2,zoompan=z='1+0.22*on/28':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=28:s=320x640:fps=8" \
+                -t 3.5 -c:v libx264 -pix_fmt yuv420p /tmp/$n.mp4 2>/dev/null || continue
+              ffmpeg -y -v error -i /tmp/$n.mp4 \
+                -vf "split[s0][s1];[s0]palettegen=max_colors=96[p];[s1][p]paletteuse" \
+                docs/images/$n.gif 2>/dev/null || true
+              echo "GIF: $n $(du -h docs/images/$n.gif 2>/dev/null | cut -f1)"
+            fi
+          done
+
+      - name: Commit visuals + fix README paths (fault-tolerant)
+        continue-on-error: true
+        run: |
+          git config user.name "Baloch Factory"
+          git config user.email "factory@baloch.local"
+          sed -i 's|https://github.com/kamran1272/BalochAI/releases/download/v1.0.0/|docs/images/|g' README.md || true
+          git add docs/images/ README.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Add README visuals [skip ci]"
+            git push origin HEAD:main
+            echo "visuals committed"
+          else
+            echo "visuals already present"
+          fi
+
+      - name: Build debug APK
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: '8.9'
+          arguments: assembleDebug --no-daemon --stacktrace
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: baloch-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Create GitHub Release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0
+          name: Baloch v1.0.0
+          body: |
+            Baloch v1.0.0 — JARVIS-style on-device AI assistant for Android.
+            Package: com.baloch.ai | minSdk 26 | targetSdk 34
+            Install the APK below, grant permissions on first run.
+            Visuals: official design mock-ups (concept art, not app screenshots).
+          files: |
+            app/build/outputs/apk/debug/app-debug.apk

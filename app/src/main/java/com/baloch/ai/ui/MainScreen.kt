@@ -422,6 +422,18 @@ private fun ChatModeScreen(viewModel: BalochViewModel) {
             }
             Spacer(Modifier.height(4.dp))
 
+            val isJarvis = mode == BalochMode.JARVIS
+
+            if (isJarvis) {
+                // ---- JARVIS voice mode: voice instructions only, no chat ----
+                JarvisVoicePanel(
+                    listening = listening,
+                    orbState = orbState,
+                    lang = lang,
+                    onMicTap = ::onMicTap,
+                    modifier = Modifier.weight(1f),
+                )
+            } else {
             // ---- Chat ----
             LazyColumn(
                 state = listState,
@@ -467,8 +479,10 @@ private fun ChatModeScreen(viewModel: BalochViewModel) {
                     modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 4.dp),
                 )
             }
+            } // else (MANUAL): chat + orb above
 
-            // ---- Input row ----
+            // ---- Input row (MANUAL mode only) ----
+            if (!isJarvis) {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(12.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -539,6 +553,7 @@ private fun ChatModeScreen(viewModel: BalochViewModel) {
                     )
                 }
             }
+            } // if (!isJarvis): input row
         }
 
         // Hologram overlay on top of everything (touch-transparent).
@@ -575,6 +590,61 @@ private fun ChatModeScreen(viewModel: BalochViewModel) {
                     }
                 },
                 containerColor = BalochPanel,
+            )
+        }
+    }
+}
+
+/** JARVIS mode: voice-first panel. No chat, no text input — voice instructions only. */
+@Composable
+private fun JarvisVoicePanel(
+    listening: Boolean,
+    orbState: OrbState,
+    lang: BalochLanguage,
+    onMicTap: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        BalochOrb(
+            state = if (listening) OrbState.LISTENING else orbState,
+            modifier = Modifier.size(200.dp),
+        )
+        Spacer(Modifier.height(20.dp))
+        Text(
+            text = if (listening) {
+                when (lang) {
+                    BalochLanguage.ENGLISH -> "Listening…"
+                    BalochLanguage.URDU -> "سن رہا ہوں…"
+                    BalochLanguage.HINDI -> "सुन रहा हूँ…"
+                }
+            } else {
+                when (lang) {
+                    BalochLanguage.ENGLISH -> "Tap the mic and speak, sir"
+                    BalochLanguage.URDU -> "مائیک دبائیں اور بولیں، سر"
+                    BalochLanguage.HINDI -> "माइक दबाएँ और बोलें, सर"
+                }
+            },
+            color = BalochCyan,
+            fontSize = 16.sp,
+        )
+        Spacer(Modifier.height(28.dp))
+        IconButton(
+            onClick = onMicTap,
+            modifier = Modifier
+                .size(88.dp)
+                .clip(CircleShape)
+                .background(if (listening) BalochCyan else Color.Transparent)
+                .border(2.dp, BalochCyan, CircleShape),
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_mic),
+                contentDescription = "Voice input",
+                tint = if (listening) BalochBlack else BalochCyan,
+                modifier = Modifier.size(36.dp),
             )
         }
     }

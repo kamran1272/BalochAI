@@ -1,8 +1,5 @@
 package com.baloch.ai.gesture
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
@@ -13,13 +10,11 @@ import android.hardware.TriggerEvent
 import android.hardware.TriggerEventListener
 import android.media.AudioManager
 import android.os.Binder
-import android.os.Build
 import android.os.IBinder
 import android.os.SystemClock
 import android.util.Log
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.baloch.ai.MainActivity
+import com.baloch.ai.notify.BalochNotifications
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -77,7 +72,6 @@ class SensorGestureService : android.app.Service() {
         const val ACTION_SET_RINGING = "com.baloch.ai.sensor.SET_RINGING"
         const val EXTRA_RINGING = "ringing"
 
-        private const val CHANNEL_ID = "baloch_gesture" // shared style with camera
         private const val NOTIF_ID = 4105
 
         // Wave: near→far→near within this window.
@@ -208,7 +202,6 @@ class SensorGestureService : android.app.Service() {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         sensorMap = SensorGestureMap(this)
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        createChannel()
         startForeground(NOTIF_ID, buildNotification())
         reregister()
     }
@@ -422,30 +415,12 @@ class SensorGestureService : android.app.Service() {
         try { onCommand?.invoke(command) } catch (e: Exception) { Log.w(TAG, "onCommand", e) }
     }
 
-    // ── Notification (shares the gesture channel style) ───────────
-    private fun createChannel() {
-        val mgr = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (mgr.getNotificationChannel(CHANNEL_ID) == null) {
-            mgr.createNotificationChannel(
-                NotificationChannel(
-                    CHANNEL_ID, "Gesture control", NotificationManager.IMPORTANCE_LOW
-                ).apply { description = "Indicator for hand & sensor gestures" }
-            )
-        }
-    }
-
+    // ── Branded foreground notification ───────────────────────────
     private fun buildNotification(): android.app.Notification {
-        val tap = PendingIntent.getActivity(
-            this, 0, Intent(this, MainActivity::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT or
-                (if (Build.VERSION.SDK_INT >= 23) PendingIntent.FLAG_IMMUTABLE else 0)
+        return BalochNotifications.serviceNotification(
+            this,
+            "Sensor gestures active",
+            "Wave, flip or shake — Baloch is listening to your sensors",
         )
-        return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("📳 Sensor gestures active")
-            .setContentText("Wave, flip or shake — Baloch is listening to your sensors")
-            .setOngoing(true)
-            .setContentIntent(tap)
-            .build()
     }
 }

@@ -128,7 +128,7 @@ fun GestureLabScreen(
     ) {
         // ── Header ──
         Row(verticalAlignment = Alignment.CenterVertically) {
-            BackLabel(onBack = actions.onBack)
+            BackLabel(onBack = { actions.onBack() })
             Text(
                 text = "◈ GESTURE LAB",
                 fontFamily = mono,
@@ -169,7 +169,7 @@ fun GestureLabScreen(
             }
             Spacer(Modifier.height(8.dp))
             Button(
-                onClick = actions.onCalibrate,
+                onClick = { actions.onCalibrate() },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = BalochCyan, contentColor = BalochBlack),
                 modifier = Modifier.fillMaxWidth(),

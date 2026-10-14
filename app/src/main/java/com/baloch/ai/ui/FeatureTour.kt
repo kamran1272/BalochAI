@@ -1,5 +1,6 @@
 package com.baloch.ai.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -108,6 +109,7 @@ private val STR_START = L3(en = "Get started", ur = "شروع کریں", hi = "�
  * "feature_tour_seen") and calls [onFinish] for both Skip and Get started.
  * Pure UI — no prefs writes here, so the parent stays the single writer.
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FeatureTour(
     lang: BalochLanguage,

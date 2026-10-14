@@ -35,7 +35,7 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p docs/images
-          curl -sL --max-time 120 "https://muse.ai/files/1277978102076545/2118467388877338/qygu82e8jddr1msx8p8ochk9/logo-obsidian-cube.webp" -o docs/images/logo-obsidian-cube.webp || true
+          curl -sL --max-time 120 "https://muse.ai/files/1277978102076545/2687284281691098/cgabyp77p7che6rq6y1j5le4/logo-arc-reactor.webp" -o docs/images/logo-obsidian-cube.webp || true
           curl -sL --max-time 120 "https://muse.ai/files/1277978102076545/1119993763755772/w4y70ybqv9jcobr6fx0d5785/ui-splash.webp" -o docs/images/ui-splash.webp || true
           curl -sL --max-time 120 "https://muse.ai/files/1277978102076545/1648126910385945/c6furu74xjarandpvct5r4z4/ui-main.webp" -o docs/images/ui-main.webp || true
           curl -sL --max-time 120 "https://muse.ai/files/1277978102076545/1648256176836531/eojnpo2lmxq0xycoi7c05w26/ui-settings.webp" -o docs/images/ui-settings.webp || true

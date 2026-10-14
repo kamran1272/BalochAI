@@ -5,18 +5,22 @@ All notable changes to this project are documented here, in
 Versioning: `MAJOR.MINOR.PATCH` + an always-incrementing `versionCode`
 (see `update/VersionInfo.kt` — the single source of truth).
 
-## [Unreleased]
+## [1.0.1] - 2026-10-14
 
-### Fixed — CI build pipeline (2026-10-14)
+### Added
 
-- Corrected the Vosk Maven coordinates to
-  `com.alphacephei:vosk-android:0.3.47` so dependency resolution uses the
-  real published artifact.
-- Fixed the Gradle 8.9 download step to follow HTTP redirects
-  (`curl -sSL`); the missing flag had been stopping every build before
-  compilation could start.
-- Set the repository's workflow permissions to Read and write so the
-  build can commit its error log and publish the v1.0.0 release.
+- **JARVIS voice-only mode** — when JARVIS mode is on, the main screen
+  hides the chat and text input entirely; a voice-first panel with a large
+  orb, status text and a big mic button takes voice instructions only.
+- **Professional notifications** — branded Baloch notification icon
+  (Arc Reactor mark), proper channels ("Baloch background services",
+  "Baloch alerts"), cyan accent, tap-to-open; service notifications
+  rewritten without emoji.
+
+### Changed
+
+- Launcher icon and README branding swapped from Obsidian Cube to the
+  Arc Reactor logo (Kamran's final pick).
 
 ## [1.0.0] - 2026-10-14
 

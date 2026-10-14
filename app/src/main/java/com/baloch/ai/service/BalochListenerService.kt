@@ -25,6 +25,7 @@ import com.baloch.ai.MainActivity
 import com.baloch.ai.brain.BalochLanguage
 import com.baloch.ai.brain.L3
 import com.baloch.ai.brain.Replies
+import com.baloch.ai.notify.BalochNotifications
 import com.baloch.ai.voice.UtteranceCapture
 import com.baloch.ai.voice.VoiceInput
 import com.baloch.ai.voice.VoiceOutput
@@ -572,13 +573,6 @@ class BalochListenerService : Service() {
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) return
         notificationManager.createNotificationChannel(
             NotificationChannel(
-                CHANNEL_LISTENING,
-                "Baloch listening",
-                NotificationManager.IMPORTANCE_LOW,
-            ).apply { description = "Shows while always-on voice is active" },
-        )
-        notificationManager.createNotificationChannel(
-            NotificationChannel(
                 CHANNEL_CONFIRM,
                 "Baloch confirmations",
                 NotificationManager.IMPORTANCE_HIGH,
@@ -589,19 +583,10 @@ class BalochListenerService : Service() {
     private fun buildListeningNotification(status: String): Notification {
         val text = when (status) {
             WakeWordEngine.STATUS_READY, STATUS_STARTING ->
-                "◈ Baloch is listening — say \"hey baloch\""
-            else -> "◈ Baloch — $status"
+                "Baloch is listening — say \"hey baloch\""
+            else -> "Baloch — $status"
         }
-        // NOTE (final pass): replace android.R.drawable.ic_btn_speak_now with
-        // the Baloch orb icon once the asset exists.
-        return NotificationCompat.Builder(this, CHANNEL_LISTENING)
-            .setSmallIcon(android.R.drawable.ic_btn_speak_now)
-            .setContentTitle("Baloch")
-            .setContentText(text)
-            .setOngoing(true)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setCategory(NotificationCompat.CATEGORY_SERVICE)
-            .build()
+        return BalochNotifications.serviceNotification(this, "Baloch", text)
     }
 
     // ------------------------------------------------------------------
@@ -670,7 +655,6 @@ class BalochListenerService : Service() {
         const val EXTRA_COMMAND = "extra_command"
         const val EXTRA_LANG = "extra_lang"
 
-        private const val CHANNEL_LISTENING = "baloch_listening"
         private const val CHANNEL_CONFIRM = "baloch_confirm"
 
         private const val NOTIF_ID_LISTENING = 1001

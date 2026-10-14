@@ -4,6 +4,16 @@
 release: what went into each version, the sharp edges found, and the
 migration state. The user-facing notes live in [CHANGELOG.md](CHANGELOG.md).
 
+## v1.0.1 (code 2) — 2026-10-14 — JARVIS voice mode + branded notifications
+
+### What went in
+
+- `ui/MainScreen.kt`: JARVIS mode renders `JarvisVoicePanel` (large orb + status + big mic), chat LazyColumn and text input row hidden; MANUAL mode unchanged.
+- `notify/BalochNotifications.kt` (new): central notification helper — `baloch_service` (LOW) and `baloch_alerts` (HIGH) channels, `R.drawable.ic_stat_baloch` icon, cyan accent.
+- `res/drawable/ic_stat_baloch.xml` (new): white Arc Reactor vector mark for notification small icons.
+- Foreground service notifications (`SensorGestureService`, `GestureControlService`, `BalochListenerService`) migrated to the helper; emoji dropped from titles.
+- Version bump 1.0.0 (code 1) → 1.0.1 (code 2); workflow release tag follows to v1.0.1 so the in-app updater picks it up.
+
 ## v1.0.0 (code 1) — 2026-10-14 — first living release
 
 ### What went in

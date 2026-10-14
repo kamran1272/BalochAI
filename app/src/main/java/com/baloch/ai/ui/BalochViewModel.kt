@@ -40,12 +40,9 @@ import com.baloch.ai.life.FocusManager
 import com.baloch.ai.life.LifeActions
 import com.baloch.ai.life.LifeUiState
 import com.baloch.ai.life.loadLifeUiState
-import com.baloch.ai.power.PowerActions
 import com.baloch.ai.power.PowerPrefs
-import com.baloch.ai.power.PowerUiState
-import com.baloch.ai.power.loadPowerUiState
 import com.baloch.ai.callerid.SpamShield
-import com.baloch.ai.callerid.CallerIdService
+import com.baloch.ai.callerid.CallerIdAnnouncer
 import com.baloch.ai.engine.ActionResult
 import com.baloch.ai.engine.DeviceActions
 import com.baloch.ai.engine.NotesStore
@@ -86,6 +83,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -184,6 +182,7 @@ class BalochViewModel(application: Application) : AndroidViewModel(application) 
             BalochScreen.GestureRemap -> refreshRemap()
             BalochScreen.Routines -> refreshRoutines()
             BalochScreen.Privacy -> refreshPrivacy()
+            BalochScreen.Qibla -> { /* qibla binds on entry via its actions */ }
             BalochScreen.Main -> { /* nothing */ }
         }
         _screen.value = s
@@ -395,10 +394,14 @@ class BalochViewModel(application: Application) : AndroidViewModel(application) 
                 LanguageDetector.detect(userText, manual).language else manual
             val ctx = deviceActions.currentContext(lang)
             val result = try {
-                orchestrator.run(userText, ctx) { chips ->
-                    // onChips fires from IO worker threads — marshal to Main.
-                    viewModelScope.launch(Dispatchers.Main) { _agentChips.value = chips }
-                }
+                orchestrator.run(
+                    userText,
+                    ctx,
+                    onChips = { chips ->
+                        // onChips fires from IO worker threads — marshal to Main.
+                        viewModelScope.launch(Dispatchers.Main) { _agentChips.value = chips }
+                    },
+                )
             } catch (e: Exception) {
                 OrchestratedResult(
                     reply = L3(
@@ -696,7 +699,7 @@ class BalochViewModel(application: Application) : AndroidViewModel(application) 
                 biometricAvailable = BiometricLock.canUseBiometric(appCtx),
                 biometricLockOn = prefs.getBoolean("biometric_lock_on", false),
                 rulesCount = ruleStore.all().size,
-                mode = modeManager.modeFlow.value,
+                mode = mode.value,
                 checkInFrequency = when (
                     appCtx.getSharedPreferences("baloch_companion", Context.MODE_PRIVATE)
                         .getString("checkin_level", "normal")
@@ -1280,7 +1283,7 @@ class BalochViewModel(application: Application) : AndroidViewModel(application) 
             refreshCallLog()
         }
         override fun onDeepLookup(number: String) {
-            val intent = CallerIdService.deepLookupIntent(appCtx, number)
+            val intent = CallerIdAnnouncer.deepLookupIntent(number)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             appCtx.startActivity(intent)
         }
@@ -1321,9 +1324,9 @@ class BalochViewModel(application: Application) : AndroidViewModel(application) 
                             _gestureLabState.value = _gestureLabState.value.copy(
                                 frame = frame.bitmap,
                                 landmarks = frame.landmarks,
-                                lastGestureText = frame.gestureText,
-                                fpsText = frame.fpsText,
-                                statusText = frame.statusText,
+                                lastGestureText = frame.gestureVote?.name ?: "—",
+                                fpsText = "%.1f".format(frame.fps),
+                                statusText = frame.status.name.replace('_', ' '),
                             )
                         }
                     }

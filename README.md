@@ -1,4 +1,5 @@
 # ◈ BALOCH
+[![version](https://img.shields.io/github/v/release/kamran1272/BalochAI)](https://github.com/kamran1272/BalochAI/releases/latest)
 
 **Your personal JARVIS for your whole Android device.** A holographic, voice-first AI assistant that lives on your phone — 100% on-device, trilingual, and always at your service, sir.
 

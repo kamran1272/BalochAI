@@ -1,0 +1,86 @@
+# VERSIONS.md — factory dev ledger
+
+**Not shipped in-app.** Continuity notes for whoever builds the next
+release: what went into each version, the sharp edges found, and the
+migration state. The user-facing notes live in [CHANGELOG.md](CHANGELOG.md).
+
+## v1.0.0 (code 1) — 2026-10-14 — first living release
+
+### What went in
+
+Full feature build across ~14 subsystems (see CHANGELOG.md for the
+user-facing list). Package `com.baloch.ai`, minSdk 26. Source map:
+
+| Area | Package | Key files |
+|---|---|---|
+| UI | `ui/` | SplashScreen (cinematic boot + version footer), MainScreen, SettingsScreen, MemoryScreen, VoiceLockSetupScreen, GestureLabScreen, ScheduleScreen, CallLogScreen |
+| Brain | `brain/` | RuleBasedBrain, Intents, L3 trilingual strings, BalochPersona, BalochLanguage |
+| Agents | `agents/` | Orchestrator + 6 specialists (System/Info/Comms/Time/Memory/Brief) |
+| Device actions | `engine/` | DeviceActions, `pro/` pack (briefing, routines, currency, clipboard, battery guardian, emergency ICE) |
+| Scheduling | `schedule/` | TaskStore (`scheduled_tasks.json`), TaskScheduler, RescheduleReceiver (boot re-arm) |
+| Always-on | `service/`, `voice/` | BalochListenerService, WakeWordEngine (Vosk), UtteranceCapture, VoiceLockManager (DataStore `voice_lock`), PinManager, whisper pipeline |
+| Memory | `memory/room/` | BalochDatabase v1 (SQLCipher, fallback plain), Fact/Conversation/Entity entities + DAOs |
+| Rules/privacy | `rules/` | PersonalDataGuard, GuidanceRuleStore (`guidance_rules_prefs`) |
+| Caller ID | `callerid/` | CallScreeningService path + PhoneStateListener fallback |
+| Gestures | `gesture/` | Camera2 hand-gesture service + sensor fallback |
+| Updates (new) | `update/` | VersionInfo, UpdateChecker, MigrationContract |
+| Settings state | `settings/` | LanguageManager (`baloch_prefs`), ModeManager (DataStore `baloch_mode`) |
+
+### Known edges (fix or carry forward)
+
+1. **build.gradle versionName is `0.1.0`, code targets v1.0.0.**
+   `app/build.gradle` still reads `versionCode 1` / `versionName "0.1.0"`
+   while `update/VersionInfo.kt` declares `1.0.0` / `1`. The factory
+   MUST set `versionName "1.0.0"` before building the v1.0.0 APK, or the
+   OS-reported version and the in-app version disagree and the updater's
+   comparison logic misfires. (Parent owns build.gradle.)
+2. **`exportSchema = false`.** Flip to `true` and commit `app/schemas/`
+   before writing the first Room migration — auto-migrations are
+   build-verified against those schemas.
+3. **UpdateChecker is infrastructure, not yet wired to UI.** The parent
+   owns: Settings → About → "Check for updates" row, the
+   Available→confirm→`downloadAndPromptInstall` flow, and the splash
+   version footer (snippet in UPDATES-DOCS-ADD.md). No release exists
+   yet at `kamran1272/BalochAI` — the factory creates the repo and the
+   first `v1.0.0 (code 1)` release with the APK asset.
+4. **SpeechRecognizer availability** varies by device/OEM (needs Google
+   voice services on some); the app degrades to typed chat with an
+   honest message — do not "fix" by bundling a cloud STT.
+5. **Vosk model download** (~50 MB, first run) needs ~160 MB free and
+   network; failure disables always-on with an honest status.
+6. **DownloadManager + `setDestinationInExternalPublicDir`** is
+   deprecated on API 29+ but functional; keep it (public Downloads is
+   where Kamran expects the APK). No storage permission needed — the
+   system service performs the write.
+
+### Migration notes (v1.0.0 baseline)
+
+- Room `baloch_memory.db` at schema **v1** — the first migration ever
+  written will be 1→2. Additive → `@AutoMigration`; destructive →
+  manual `Migration` carrying rows forward (see MigrationContract).
+- DataStore `"voice_lock"`, DataStore `"baloch_mode"`, SharedPreferences
+  `"baloch_prefs"` / `"guidance_rules_prefs"` / `"baloch_pro"`, files
+  `scheduled_tasks.json` / `baloch_routines.json` — key-versioning rule
+  is `<key>_v2` + migrate-read, never key reuse (see MigrationContract).
+- Update QA checklist per release: install old APK → populate every
+  `MigrationContract.MUST_SURVIVE` store → install new APK → assert all
+  read back → assert scheduled tasks re-armed.
+
+---
+
+## Template for the next release
+
+```markdown
+## vX.Y.Z (code N) — YYYY-MM-DD — one-line theme
+
+### What went in
+- ...
+
+### Known edges
+- ...
+
+### Migration notes
+- Room vA → vB via (autoMigration | manual Migration(A, B)): tables/columns touched.
+- DataStore/SharedPreferences key changes: <key>_v1 → <key>_v2 (migrate-read added).
+- QA: MUST_SURVIVE walk on device — pass/fail.
+```

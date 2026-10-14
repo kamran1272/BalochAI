@@ -163,7 +163,7 @@ class CricketWorker(
                 "सर, पाकिस्तान क्रिकेट की ख़बर: ${fresh.first().title}",
             ).pick(lang),
         )
-        rememberLinks(ctx, (seen + fresh.map { it.link }).takeLast(60))
+        rememberLinks(ctx, (seen + fresh.map { it.link }).toList().takeLast(60))
         return Result.success()
     }
 

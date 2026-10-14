@@ -94,7 +94,7 @@ object UpdateChecker {
                 ?: return UpdateResult.Error(
                     UpdateStrings.RELEASE_UNREADABLE.pick(langOf(appCtx)),
                 )
-            if (release.versionCode > APP_VERSION_CODE) {
+            if (release.versionCode > VersionInfo.APP_VERSION_CODE) {
                 UpdateResult.Available(release)
             } else {
                 // Equal or older: never suggest a downgrade.
@@ -190,7 +190,7 @@ object UpdateChecker {
                 // GitHub's API 403s requests without a User-Agent.
                 setRequestProperty(
                     "User-Agent",
-                    "BalochAI-Android/$APP_VERSION_NAME",
+                    "BalochAI-Android/${VersionInfo.APP_VERSION_NAME}",
                 )
                 setRequestProperty("Accept", "application/vnd.github+json")
             }
@@ -310,9 +310,9 @@ object UpdateStrings {
         hi = "अपडेट्स जाँच रहा हूँ, सर — एक पल।",
     )
     val UP_TO_DATE = L3(
-        en = "You're on the latest version, sir — v$APP_VERSION_NAME. Nothing to do.",
-        ur = "آپ تازہ ترین ورژن پر ہیں، سر — v$APP_VERSION_NAME۔ کچھ کرنے کی ضرورت نہیں۔",
-        hi = "आप नवीनतम संस्करण पर हैं, सर — v$APP_VERSION_NAME। कुछ करने की ज़रूरत नहीं।",
+        en = "You're on the latest version, sir — v${VersionInfo.APP_VERSION_NAME}. Nothing to do.",
+        ur = "آپ تازہ ترین ورژن پر ہیں، سر — v${VersionInfo.APP_VERSION_NAME}۔ کچھ کرنے کی ضرورت نہیں۔",
+        hi = "आप नवीनतम संस्करण पर हैं, सर — v${VersionInfo.APP_VERSION_NAME}। कुछ करने की ज़रूरत नहीं।",
     )
     val AVAILABLE = L3(
         en = "A new Baloch is ready, sir — v{version}. Shall I download it?",

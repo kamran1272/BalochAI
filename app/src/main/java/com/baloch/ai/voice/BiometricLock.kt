@@ -41,7 +41,7 @@ object BiometricLock {
         onOk: () -> Unit,
         onFail: (String) -> Unit,
     ) {
-        val executor = ContextCompat.getExecutor(activity)
+        val executor = ContextCompat.getMainExecutor(activity)
         val biometricPrompt = BiometricPrompt(
             activity,
             executor,

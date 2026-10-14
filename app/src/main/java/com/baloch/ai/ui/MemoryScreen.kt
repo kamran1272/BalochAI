@@ -44,6 +44,7 @@ import com.baloch.ai.memory.room.EntityRecord
 import com.baloch.ai.memory.room.FactEntity
 import com.baloch.ai.memory.room.Tier
 import com.baloch.ai.ui.components.BackChevron
+import com.baloch.ai.ui.components.EmptyState
 import com.baloch.ai.ui.theme.BalochAmber
 import com.baloch.ai.ui.theme.BalochBlack
 import com.baloch.ai.ui.theme.BalochCyan
@@ -250,12 +251,11 @@ fun MemoryScreen(
             }
             if (visibleFacts.isEmpty() && visibleEntities.isEmpty()) {
                 item {
-                    Text(
-                        "Nothing here yet, sir. Tell me about yourself — I'll remember. 📝",
-                        color = BalochTextDim,
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 13.sp,
-                        modifier = Modifier.padding(top = 24.dp),
+                    EmptyState(
+                        icon = "🧠",
+                        title = "A fresh mind, sir",
+                        hint = "Nothing stored yet. Tell me about yourself — " +
+                            "people, preferences, facts — and I'll remember.",
                     )
                 }
             }

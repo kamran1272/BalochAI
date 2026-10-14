@@ -35,6 +35,7 @@ import com.baloch.ai.brain.Replies
 import com.baloch.ai.brain.RuleBasedBrain
 import com.baloch.ai.settings.AiBrainPrefs
 import com.baloch.ai.settings.BrainMode
+import com.baloch.ai.settings.ProtectionMode
 import com.baloch.ai.life.BalochTranslator
 import com.baloch.ai.life.FocusManager
 import com.baloch.ai.life.LifeActions
@@ -248,6 +249,14 @@ class BalochViewModel(application: Application) : AndroidViewModel(application) 
     private val _listening = MutableStateFlow(false)
     val listening: StateFlow<Boolean> = _listening.asStateFlow()
 
+    /**
+     * Last voice-input failure, human-readable (see VoiceInput.describeError).
+     * Set on every failed listen — the voice UI surfaces this instead of
+     * failing silently.
+     */
+    private val _lastVoiceError = MutableStateFlow<String?>(null)
+    val lastVoiceError: StateFlow<String?> = _lastVoiceError.asStateFlow()
+
     private val _orbState = MutableStateFlow(OrbState.IDLE)
     val orbState: StateFlow<OrbState> = _orbState.asStateFlow()
 
@@ -339,11 +348,17 @@ class BalochViewModel(application: Application) : AndroidViewModel(application) 
             stopVoice()
             return
         }
-        if (!voiceInput.isAvailable()) {
-            say(Replies.VOICE_UNAVAILABLE.pick(languageManager.current()))
+        // Offline-first: when the on-device Vosk model is provisioned the
+        // platform recogniser isn't needed at all — don't gate on it.
+        val offlineReady = voiceInput.isOfflineReady()
+        if (!offlineReady && !voiceInput.isAvailable()) {
+            val reason = VoiceInput.describeError("unavailable")
+            _lastVoiceError.value = reason
+            say(reason)
             return
         }
         _listening.value = true
+        _lastVoiceError.value = null
         _orbState.value = OrbState.LISTENING
         _voiceMode.value = true // auto-switch to immersive voice mode
         voiceInput.startListening(
@@ -353,14 +368,17 @@ class BalochViewModel(application: Application) : AndroidViewModel(application) 
                 _listening.value = false
                 _orbState.value = OrbState.IDLE
                 _input.value = ""
+                _lastVoiceError.value = null
                 process(text)
             },
             onError = { code ->
                 _listening.value = false
                 _orbState.value = OrbState.IDLE
-                if (code != "error:7") { // 7 = no speech; stay silent on that one
-                    say(MISHEARD.pick(languageManager.current()))
-                }
+                // Transparent failure: say the actual reason instead of a
+                // generic "didn't catch that" — or silence.
+                val reason = VoiceInput.describeError(code)
+                _lastVoiceError.value = reason
+                say(reason)
             },
             onFallback = {
                 say(Replies.VOICE_FALLBACK_ENGLISH.pick(languageManager.current()), speak = false)
@@ -728,6 +746,10 @@ class BalochViewModel(application: Application) : AndroidViewModel(application) 
                 aiModelSizeBytes = LlmModelManager(appCtx).storageUsedBytes(),
                 aiModelRamGb = LlmModelManager(appCtx).deviceRamGb(),
                 aiModelRamOk = LlmModelManager(appCtx).deviceRamGb() >= 4.0,
+                protectionMode = ProtectionMode.isOn(appCtx),
+                // A running voice test keeps its own result; a fresh
+                // settings open starts idle.
+                voiceTestResult = _settingsState.value.voiceTestResult,
             )
             _settingsState.value = state
             // Life + Power sections (their own holders).
@@ -884,6 +906,54 @@ class BalochViewModel(application: Application) : AndroidViewModel(application) 
         override fun onCheckForUpdates() = checkForUpdates()
         override fun onOpenPrivacyDashboard() = openScreen(BalochScreen.Privacy)
 
+        override fun onProtectionModeChange(enabled: Boolean) {
+            ProtectionMode.set(appCtx, enabled)
+            refreshSettings()
+            // MainActivity re-applies FLAG_SECURE in onResume — the change
+            // lands the moment the user leaves Settings. No restart needed.
+        }
+
+        override fun onTestVoiceInput() {
+            val offlineReady = voiceInput.isOfflineReady()
+            if (!offlineReady && !voiceInput.isAvailable()) {
+                _settingsState.value = _settingsState.value.copy(
+                    voiceTestResult = VoiceInput.describeError("unavailable"),
+                )
+                return
+            }
+            _settingsState.value = _settingsState.value.copy(
+                voiceTestResult = buildString {
+                    append("Listening… speak now, sir.")
+                    if (!offlineReady) {
+                        append(" (Offline voice model not downloaded — using online recognition.)")
+                    }
+                },
+            )
+            voiceInput.startListening(
+                lang = languageManager.current(),
+                onPartial = { partial ->
+                    _settingsState.value = _settingsState.value.copy(
+                        voiceTestResult = "Hearing: “$partial”…",
+                    )
+                },
+                onFinal = { text ->
+                    _settingsState.value = _settingsState.value.copy(
+                        voiceTestResult = "Heard: “$text” ✓",
+                    )
+                },
+                onError = { code ->
+                    _settingsState.value = _settingsState.value.copy(
+                        voiceTestResult = VoiceInput.describeError(code),
+                    )
+                },
+                onFallback = {
+                    _settingsState.value = _settingsState.value.copy(
+                        voiceTestResult = "That language isn't supported here — retrying in English…",
+                    )
+                },
+            )
+        }
+
         // ---- AI Brain ----
         private val aiModelManager = LlmModelManager(application.applicationContext)
         private var aiDownloadJob: kotlinx.coroutines.Job? = null
@@ -1018,13 +1088,20 @@ class BalochViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun refreshVoiceLock() {
         viewModelScope.launch(Dispatchers.IO) {
-            _voiceLockState.value = _voiceLockState.value.copy(
-                isEnrolled = voiceLockManager.isEnrolled(appCtx),
-                isEnabled = voiceLockManager.isEnabled(appCtx),
-                hasPin = pinManager.hasPin(),
-                biometricAvailable = BiometricLock.canUseBiometric(appCtx),
-                biometricLockOn = prefs.getBoolean("biometric_lock_on", false),
-            )
+            try {
+                _voiceLockState.value = _voiceLockState.value.copy(
+                    isEnrolled = voiceLockManager.isEnrolled(appCtx),
+                    isEnabled = voiceLockManager.isEnabled(appCtx),
+                    hasPin = pinManager.hasPin(),
+                    biometricAvailable = BiometricLock.canUseBiometric(appCtx),
+                    biometricLockOn = prefs.getBoolean("biometric_lock_on", false),
+                )
+            } catch (e: Exception) {
+                // Never crash opening the screen — show the failure instead.
+                _voiceLockState.value = _voiceLockState.value.copy(
+                    message = "Could not load lock status — try again, sir."
+                )
+            }
         }
     }
 
@@ -1489,11 +1566,6 @@ class BalochViewModel(application: Application) : AndroidViewModel(application) 
             en = "Systems online, sir. I understand English, اردو and हिन्दी — tap the mic or type below.",
             ur = "سسٹم آن لائن ہے، سر۔ میں انگریزی، اردو اور ہندی سمجھتا ہوں — مائیک دبائیں یا نیچے لکھیں۔",
             hi = "सिस्टम ऑनलाइन है, सर। मैं अंग्रेज़ी, उर्दू और हिन्दी समझता हूँ — माइक दबाएँ या नीचे लिखें।",
-        )
-        private val MISHEARD = L3(
-            en = "I didn't catch that, sir — one more time?",
-            ur = "میں سن نہیں پایا، سر — ایک بار پھر؟",
-            hi = "मैं सुन नहीं पाया, सर — एक बार फिर?",
         )
     }
 }

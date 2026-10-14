@@ -86,20 +86,49 @@ jobs:
             echo "visuals already present"
           fi
 
-      - name: Build debug APK
-        uses: gradle/gradle-build-action@v3
-        with:
-          gradle-version: '8.9'
-          arguments: assembleDebug --no-daemon --stacktrace
+      - name: Download Gradle 8.9 (direct, no action)
+        run: |
+          curl -sS -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.9-bin.zip
+          unzip -q /tmp/gradle.zip -d /tmp
+          echo "/tmp/gradle-8.9/bin" >> $GITHUB_PATH
+          gradle --version | head -8
+
+      - name: Build debug APK (log captured)
+        run: |
+          set +e
+          gradle assembleDebug --no-daemon --stacktrace > ci-build.log 2>&1
+          echo "GRADLE_EXIT=$?" >> $GITHUB_ENV
+          set -e
+          echo "--- last 30 lines of build log ---"
+          tail -30 ci-build.log
+
+      - name: Commit build log on failure (fault-tolerant)
+        if: env.GRADLE_EXIT != '0'
+        continue-on-error: true
+        run: |
+          git config user.name "Baloch Factory"
+          git config user.email "factory@baloch.local"
+          tail -400 ci-build.log > ci-build-error.log
+          git add ci-build-error.log
+          git commit -m "CI build error log [skip ci]" || true
+          git push origin HEAD:main || true
+          echo "error log committed"
+
+      - name: Fail the job if build failed
+        if: env.GRADLE_EXIT != '0'
+        run: |
+          echo "Gradle build failed (exit $GRADLE_EXIT). See ci-build-error.log in the repo."
+          exit 1
 
       - name: Upload APK artifact
+        if: env.GRADLE_EXIT == '0'
         uses: actions/upload-artifact@v4
         with:
           name: baloch-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
 
       - name: Create GitHub Release
-        if: github.ref == 'refs/heads/main'
+        if: env.GRADLE_EXIT == '0' && github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.0

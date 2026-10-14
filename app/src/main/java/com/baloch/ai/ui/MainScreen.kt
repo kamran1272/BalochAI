@@ -209,7 +209,6 @@ private fun MainContent(viewModel: BalochViewModel) {
     val exportRequest by viewModel.exportRequest.collectAsState()
     val importRequest by viewModel.importRequest.collectAsState()
     val voiceMode by viewModel.voiceMode.collectAsState()
-    val voiceErr by viewModel.lastVoiceError.collectAsState()
     var showLangPicker by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
@@ -433,7 +432,7 @@ private fun ChatModeScreen(viewModel: BalochViewModel) {
                     listening = listening,
                     orbState = orbState,
                     lang = lang,
-                    lastVoiceError = voiceErr,
+                    lastVoiceError = viewModel.lastVoiceError.collectAsState().value,
                     onMicTap = ::onMicTap,
                     modifier = Modifier.weight(1f),
                 )

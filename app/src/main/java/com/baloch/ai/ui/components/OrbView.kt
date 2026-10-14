@@ -1,6 +1,6 @@
 package com.baloch.ai.ui.components
 
-import android.accessibilityservice.AccessibilityManager
+import android.view.accessibility.AccessibilityManager
 import android.content.Context
 import android.provider.Settings
 import androidx.compose.animation.core.FastOutSlowInEasing

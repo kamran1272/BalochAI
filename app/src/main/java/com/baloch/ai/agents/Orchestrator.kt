@@ -174,7 +174,7 @@ class Orchestrator(
                 }
                 // 2) Learn-vs-act: transmit-class needs HIS explicit yes, both
                 //    modes. Only a scope-specific standing allowance relaxes it.
-                if (a.requiresExplicitConfirm() && !a.needsConfirmation) {
+                if (PersonalDataGuard.requiresExplicitConfirm(a) && !a.needsConfirmation) {
                     val allowance = PersonalDataGuard.standingAllowanceFor(a, ruleStore)
                     if (allowance == null) {
                         var question = PersonalDataGuard.guardConfirmText(a, lang)
@@ -236,7 +236,7 @@ class Orchestrator(
 
         // Governance pendings first, then the agents' own risky-action pendings.
         val pending = rulePendings.firstOrNull()
-            ?: partResults.flatten()
+            ?: partResults.flatMap { it }
                 .firstOrNull { it.needsConfirmation && it.pendingAction != null }
                 ?.let { PendingAction(it.line, it.pendingAction!!) }
 
@@ -461,7 +461,7 @@ class Orchestrator(
         // 9) Voice-controlled settings — every toggle by voice ("driving mode on kar do").
         matchSettingsCommand(input)?.let { cmd ->
             val agent = SettingsAgent(deps)
-            val result = agent.execute(AgentTask(cmd.toAction(), lang, input))
+            val result = agent.execute(AgentTask(cmd.toDeviceAction(), lang, input))
             val nav = when (cmd) {
                 is SettingsCmd.OpenSettings -> "settings"
                 is SettingsCmd.QuerySettings -> null

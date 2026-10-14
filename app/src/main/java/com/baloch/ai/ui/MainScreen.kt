@@ -51,7 +51,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.foundation.text.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -490,7 +489,6 @@ private fun ChatModeScreen(viewModel: BalochViewModel) {
                     modifier = Modifier.weight(1f),
                     singleLine = true,
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences,
                         imeAction = androidx.compose.ui.text.input.ImeAction.Send,
                     ),
                     keyboardActions = androidx.compose.foundation.text.KeyboardActions(

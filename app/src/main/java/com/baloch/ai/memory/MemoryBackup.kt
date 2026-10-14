@@ -87,8 +87,8 @@ private fun encryptedFile(context: Context, file: File): EncryptedFile {
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
         .build()
     return EncryptedFile.Builder(
-        file,
         context,
+        file,
         masterKey,
         EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB,
     ).build()

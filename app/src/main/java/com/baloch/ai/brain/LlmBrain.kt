@@ -19,11 +19,11 @@ import kotlinx.coroutines.withTimeout
  *       .setModelPath(absolutePath)   // .bin / .task on disk, NOT assets
  *       .setMaxTokens(2048)
  *       .setMaxTopK(40)
- *       .setRandomSeed(seed)
  *       .build()
  *   // NOTE: temperature is a SESSION-level option in tasks-genai 0.10.27
  *   // (LlmInferenceSession.LlmInferenceSessionOptions.setTemperature) —
  *   // there is no setTemperature on LlmInferenceOptions.Builder.
+ *   // (Also no setRandomSeed on LlmInferenceOptions.Builder in this version.)
  *   val engine = LlmInference.createFromOptions(context, options)
  *   val reply: String = engine.generateResponse(prompt)  // blocking → IO thread
  *   engine.close()
@@ -167,7 +167,6 @@ class LlmBrain(
                 .setModelPath(path)
                 .setMaxTokens(MAX_TOKENS)
                 .setMaxTopK(TOP_K)
-                .setRandomSeed((System.currentTimeMillis() % Int.MAX_VALUE).toInt())
                 .build()
             val created = withContext(Dispatchers.IO) {
                 LlmInference.createFromOptions(appContext, options)

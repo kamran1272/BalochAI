@@ -106,8 +106,8 @@ class PrivacyLog private constructor(private val appContext: Context) {
 
     private fun encryptedFile(file: File): EncryptedFile =
         EncryptedFile.Builder(
-            file,
             appContext,
+            file,
             masterKey(),
             EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB,
         ).build()

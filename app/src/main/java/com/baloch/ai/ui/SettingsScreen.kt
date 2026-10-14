@@ -44,6 +44,9 @@ import androidx.compose.ui.unit.sp
 import com.baloch.ai.brain.BalochLanguage
 import com.baloch.ai.gesture.GestureControlService
 import com.baloch.ai.gesture.SensorGestureService
+import com.baloch.ai.life.LifeActions
+import com.baloch.ai.life.LifeSettings
+import com.baloch.ai.life.LifeUiState
 import com.baloch.ai.settings.BalochMode
 import com.baloch.ai.settings.BrainMode
 import com.baloch.ai.ui.components.BackLabel
@@ -379,7 +382,7 @@ fun SettingsScreen(
     ) {
         // ── Header ──
         Row(verticalAlignment = Alignment.CenterVertically) {
-            BackLabel(onBack = actions.onBack)
+            BackLabel(onBack = { actions.onBack() })
             Text(
                 text = "◈ SETTINGS",
                 fontFamily = mono,
@@ -554,6 +557,7 @@ fun SettingsScreen(
                 )
                 ExpenseSection(
                     state = lifeState.expense,
+                    currencies = LifeSettings.CURRENCIES,
                     onCurrency = lifeActions::onExpenseCurrencyChanged,
                     onOpenLog = lifeActions::onOpenExpenseLog,
                 )
@@ -591,7 +595,15 @@ fun SettingsScreen(
                 CurrencySection(powerState, powerActions)
                 PetrolSection(powerState, powerActions)
                 WordSection(powerState, powerActions)
-                RecorderSection(powerState, powerActions)
+                RecorderSection(
+                    powerState,
+                    powerActions,
+                    recordings = emptyList(),
+                    playingPath = null,
+                    onPlayFile = {},
+                    onStopPlayback = {},
+                    onDeleteFile = {},
+                )
                 ChargeSection(powerState, powerActions)
                 RainSection(powerState, powerActions)
                 AppLockSection(powerState, powerActions)

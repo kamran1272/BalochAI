@@ -51,7 +51,8 @@ dependencies {
     implementation 'androidx.datastore:datastore-preferences:1.1.1'
     implementation 'androidx.biometric:biometric:1.1.0'
     // Vosk offline wake-word engine (always-on voice). ~50MB model downloaded on first run.
-    implementation 'org.vosk:vosk-android:0.3.47'
+    // NOTE: Maven coordinates are com.alphacephei (Java package stays org.vosk).
+    implementation 'com.alphacephei:vosk-android:0.3.47'
     // Total Memory: Room + encrypted storage
     implementation 'androidx.room:room-runtime:2.6.1'
     implementation 'androidx.room:room-ktx:2.6.1'

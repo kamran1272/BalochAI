@@ -43,7 +43,7 @@ import com.google.mediapipe.tasks.core.BaseOptions
 import com.google.mediapipe.tasks.core.Delegate
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarker
-import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarkerOptions
+import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarker.HandLandmarkerOptions
 import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarkerResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -606,7 +606,7 @@ class GestureControlService : android.app.Service() {
     @Volatile private var lastOrientedBitmap: Bitmap? = null
     @Volatile private var lastLuma = 0.5f
 
-    private val resultListener =
+    private val resultListener: (HandLandmarkerResult, MPImage) -> Unit =
         { result: HandLandmarkerResult, _: MPImage ->
             detectionInFlight = false
             val now = SystemClock.uptimeMillis()
@@ -625,7 +625,7 @@ class GestureControlService : android.app.Service() {
             }
         }
 
-    private val errorListener = { e: RuntimeException ->
+    private val errorListener: (RuntimeException) -> Unit = { e: RuntimeException ->
         detectionInFlight = false
         Log.e(TAG, "landmarker error", e)
     }
@@ -950,8 +950,8 @@ internal object HandLandmarkerHelper {
             .setMinHandDetectionConfidence(0.5f)
             .setMinHandPresenceConfidence(0.5f)
             .setMinTrackingConfidence(0.5f)
-            .setResultListener { result, image -> resultListener(result, image) }
-            .setErrorListener { e -> errorListener(e) }
+            .setResultListener { result: HandLandmarkerResult, image: MPImage -> resultListener(result, image) }
+            .setErrorListener { e: RuntimeException -> errorListener(e) }
             .build()
         return HandLandmarker.createFromOptions(context, options)
     }

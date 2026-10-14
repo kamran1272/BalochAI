@@ -270,7 +270,10 @@ class SensorGestureService : android.app.Service() {
 
     private fun unregisterAll() {
         try { sensorManager.unregisterListener(sensorListener) } catch (_: Exception) { }
-        try { sensorManager.cancelTriggerSensor(sigMotionListener) } catch (_: Exception) { }
+        try {
+            val sm = sensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION)
+            if (sm != null) sensorManager.cancelTriggerSensor(sigMotionListener, sm)
+        } catch (_: Exception) { }
         accelRegistered = false
         proxRegistered = false
         sigMotionRegistered = false

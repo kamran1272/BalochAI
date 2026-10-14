@@ -5,6 +5,19 @@ All notable changes to this project are documented here, in
 Versioning: `MAJOR.MINOR.PATCH` + an always-incrementing `versionCode`
 (see `update/VersionInfo.kt` — the single source of truth).
 
+## [Unreleased]
+
+### Fixed — CI build pipeline (2026-10-14)
+
+- Corrected the Vosk Maven coordinates to
+  `com.alphacephei:vosk-android:0.3.47` so dependency resolution uses the
+  real published artifact.
+- Fixed the Gradle 8.9 download step to follow HTTP redirects
+  (`curl -sSL`); the missing flag had been stopping every build before
+  compilation could start.
+- Set the repository's workflow permissions to Read and write so the
+  build can commit its error log and publish the v1.0.0 release.
+
 ## [1.0.0] - 2026-10-14
 
 The first living release. 100% on-device, $0 forever, trilingual

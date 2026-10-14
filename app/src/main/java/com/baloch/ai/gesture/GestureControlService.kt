@@ -3,7 +3,6 @@ package com.baloch.ai.gesture
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -34,8 +33,8 @@ import android.view.Surface
 import android.view.WindowManager
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.baloch.ai.MainActivity
 import com.baloch.ai.brain.L3
+import com.baloch.ai.notify.BalochNotifications
 import com.google.mediapipe.framework.image.BitmapImageBuilder
 import com.google.mediapipe.framework.image.MPImage
 import com.google.mediapipe.tasks.components.containers.NormalizedLandmark
@@ -873,10 +872,6 @@ class GestureControlService : android.app.Service() {
     }
 
     private fun buildNotification(): Notification {
-        val tap = PendingIntent.getActivity(
-            this, 0, Intent(this, MainActivity::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
         val text = when (currentStatus) {
             GestureStatus.CAMERA_BUSY -> "Paused — camera is busy"
             GestureStatus.PAUSED_SCREEN_OFF -> "Paused — screen off"
@@ -884,13 +879,7 @@ class GestureControlService : android.app.Service() {
             GestureStatus.NOT_CALIBRATED -> "Calibrate once in Settings → Gestures"
             else -> "Watching for your hand gestures"
         }
-        return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_menu_camera)
-            .setContentTitle("👆 Gesture control active")
-            .setContentText(text)
-            .setOngoing(true)
-            .setContentIntent(tap)
-            .build()
+        return BalochNotifications.serviceNotification(this, "Gesture control active", text)
     }
 
     private fun updateNotification() {

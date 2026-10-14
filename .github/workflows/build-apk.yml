@@ -131,10 +131,10 @@ jobs:
         if: env.GRADLE_EXIT == '0' && github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.0
-          name: Baloch v1.0.0
+          tag_name: v1.0.1
+          name: Baloch v1.0.1
           body: |
-            Baloch v1.0.0 — JARVIS-style on-device AI assistant for Android.
+            Baloch v1.0.1 — JARVIS-style on-device AI assistant for Android.
             Package: com.baloch.ai | minSdk 26 | targetSdk 34
             Install the APK below, grant permissions on first run.
             Visuals: official design mock-ups (concept art, not app screenshots).

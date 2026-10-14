@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Voice -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Notifications (summary reading) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Exact alarms -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SET_ALARM" />
+    <!-- Re-arm scheduled tasks after reboot -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Calls & SMS (RISKY actions — always confirmed first) -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- Location: geofence reminders + Qibla (on-demand only, never background-tracked) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <!-- Radios & hardware -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+    <!-- Brightness control -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <!-- PRO PACK: internet (weather + currency rates) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- PRO PACK: screen-time insights (special access — granted in Settings) -->
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <!-- PRO PACK: do-not-disturb control (special access — granted in Settings) -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <!-- ALWAYS-ON: foreground mic service (Android 14 rule) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <!-- GESTURES: camera foreground-service type (API 34 requirement) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <!-- ALWAYS-ON: keeps the CPU awake for the wake-word loop with screen off -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Full-screen confirm notification for risky commands (screen on) -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <!-- Battery-optimisation exemption prompt -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <!-- CALLER ID: incoming-call detection without the screening role -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- CALLER ID: recent-calls list on the Caller ID screen -->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <!-- UPDATES: check the GitHub releases feed for updates -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- UPDATES: fire the system APK install prompt (never silent-installs) -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <application
+        android:name=".BalochApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Baloch"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Baloch">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Reads active notifications so Baloch can summarise them -->
+        <service
+            android:name=".engine.NotificationReader"
+            android:label="Baloch notification reader"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- Always-on voice: offline "hey baloch" wake-word listener.
+             Runs even with the screen off / phone locked. -->
+        <service
+            android:name=".service.BalochListenerService"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
+
+        <!-- Camera hand-gesture pipeline. exported=false: only Baloch binds it. -->
+        <service
+            android:name=".gesture.GestureControlService"
+            android:exported="false"
+            android:foregroundServiceType="camera" />
+
+        <!-- Sensor gestures (wave / flip / shake / pick-up). Normal sensor
+             APIs only, so the generic foreground declaration is enough. -->
+        <service
+            android:name=".gesture.SensorGestureService"
+            android:exported="false" />
+
+        <!-- Caller ID: system call screening. Binds only when Baloch holds
+             ROLE_CALL_SCREENING (granted once by Kamran, API 29+). -->
+        <service
+            android:name=".callerid.BalochCallScreeningService"
+            android:permission="android.permission.BIND_SCREENING_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.telecom.CallScreeningService" />
+            </intent-filter>
+        </service>
+
+        <!-- Fires scheduled reminders -->
+        <receiver
+            android:name=".engine.ReminderReceiver"
+            android:exported="false" />
+
+        <!-- PRO PACK: lifts DND automatically after meeting-mode / delayed-DND timers -->
+        <receiver
+            android:name=".engine.pro.DndOffReceiver"
+            android:exported="false" />
+
+        <!-- One-shot scheduled tasks (exact AlarmManager alarms) -->
+        <receiver
+            android:name=".schedule.TaskFireReceiver"
+            android:exported="false" />
+
+        <!-- Re-arms all enabled scheduled tasks after a reboot -->
+        <receiver
+            android:name=".schedule.RescheduleReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Serves the downloaded update APK to the system installer. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- Focus-mode Pomodoro boundaries (RTC_WAKEUP alarms). -->
+        <receiver
+            android:name="com.baloch.ai.life.FocusAlarmReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.baloch.ai.life.FOCUS_END" />
+                <action android:name="com.baloch.ai.life.BREAK_END" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Geofence transitions (enter/dwell → reminder notification). -->
+        <receiver
+            android:name="com.baloch.ai.life.GeofenceTransitionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.baloch.ai.life.GEOFENCE_TRANSITION" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Re-register geofences after reboot. -->
+        <receiver
+            android:name="com.baloch.ai.life.BootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Driving-mode SMS auto-reply. -->
+        <receiver
+            android:name="com.baloch.ai.power.DrivingSmsReceiver"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Charge-complete monitor. -->
+        <receiver
+            android:name="com.baloch.ai.power.ChargeAlertReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

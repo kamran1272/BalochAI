@@ -5,6 +5,48 @@ All notable changes to this project are documented here, in
 Versioning: `MAJOR.MINOR.PATCH` + an always-incrementing `versionCode`
 (see `update/VersionInfo.kt` — the single source of truth).
 
+## [1.0.2] - 2026-10-14
+
+### Added
+
+- **Protection mode toggle** — Settings → Privacy & Permissions has a new
+  "Protection mode" switch (ON by default). Switch it off to take
+  screenshots or screen recordings — for example, to report an issue —
+  and back on when done. Takes effect immediately, no restart needed.
+- **Voice input self-test** — Settings → Voice has a "Test voice input"
+  row: speak a test phrase and see exactly what was heard, or the precise
+  reason it failed.
+- **Transparent voice failures** — when voice input fails, Baloch now says
+  the actual reason ("Microphone permission denied — enable it in system
+  Settings", "I couldn't understand that — try speaking closer") instead
+  of failing silently. The reason also appears under the mic in JARVIS
+  voice mode.
+
+### Changed
+
+- Voice input no longer wrongly reports "unavailable" on devices without
+  Google voice services when the on-device offline model is ready — the
+  offline path is properly preferred.
+
+### Fixed
+
+- Screenshots and screen recordings are no longer unconditionally blocked;
+  they are governed by the Protection mode toggle (default: blocked).
+- **Voice Lock setup crash** — tapping Settings → Security → Voice Lock
+  setup closed the app. Two separate DataStore delegates pointed at the
+  same "voice_lock" file (VoiceLockManager and PinManager); DataStore 1.1+
+  throws "multiple DataStores active for the same file" the moment both are
+  touched. Now a single shared delegate (`voice/VoiceLockStore.kt`), and the
+  setup screen's status load is guarded so it can never crash on open.
+
+### Polish
+
+- Whole-row tap targets on all settings toggles, one shared switch style
+  across the app, hairline dividers in settings sections.
+- Composed empty states for Memory ("A fresh mind, sir") and Schedule.
+- Calm amber notice cards for informational states and failure reasons —
+  red stays reserved for destructive confirmations.
+
 ## [1.0.1] - 2026-10-14
 
 ### Added

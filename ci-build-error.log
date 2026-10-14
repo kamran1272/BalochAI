@@ -1,31 +1,205 @@
+> Task :app:processDebugManifest
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugStartupProfile
+> Task :app:processDebugManifestForPackage
+> Task :app:checkDebugDuplicateClasses
+> Task :app:processDebugResources
+> Task :app:mergeExtDexDebug
+> Task :app:mergeDebugJniLibFolders
+> Task :app:mergeLibDexDebug
+> Task :app:mergeDebugNativeLibs
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
 
-Welcome to Gradle 8.9!
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libdatastore_shared_counter.so, libjnidispatch.so, libllm_inference_engine_jni.so, libmediapipe_tasks_vision_jni.so, libsqlcipher.so, libtranslate_jni.so, libvosk.so.
 
-Here are the highlights of this release:
- - Enhanced Error and Warning Messages
- - IDE Integration Improvements
- - Daemon JVM Information
+> Task :app:kspDebugKotlin
+e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
+    1. Kotlin compile daemon is ready
 
-For more details see https://docs.gradle.org/8.9/release-notes.html
-
-To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.9/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
-Daemon will be stopped at the end of the build 
+> Task :app:compileDebugKotlin FAILED
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:177:23 Unresolved reference 'requiresExplicitConfirm'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:239:28 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:239:28 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun <T> Array<out Array<out T>>.flatten(): List<T>
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:240:18 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:240:18 Not enough information to infer type argument for 'T'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:240:30 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:240:35 Unresolved reference 'needsConfirmation'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:240:59 Unresolved reference 'pendingAction'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:241:19 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:241:19 Not enough information to infer type argument for 'T'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:241:23 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:241:42 Unresolved reference 'line'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:241:51 Unresolved reference 'pendingAction'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/agents/Orchestrator.kt:464:54 Unresolved reference 'toAction'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/brain/LlmBrain.kt:168:18 Unresolved reference 'setTemperature'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/gesture/GestureControlService.kt:46:57 Unresolved reference 'HandLandmarkerOptions'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/gesture/GestureControlService.kt:361:34 Argument type mismatch: actual type is 'kotlin.Function2<com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarkerResult, com.google.mediapipe.framework.image.MPImage, kotlin.Any>', but 'kotlin.Function2<com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarkerResult, com.google.mediapipe.framework.image.MPImage, kotlin.Unit>' was expected.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/gesture/GestureControlService.kt:361:50 Argument type mismatch: actual type is 'kotlin.Function1<java.lang.RuntimeException, kotlin.Int>', but 'kotlin.Function1<java.lang.RuntimeException, kotlin.Unit>' was expected.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/gesture/GestureControlService.kt:946:23 Unresolved reference 'HandLandmarkerOptions'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/gesture/GestureControlService.kt:953:34 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/gesture/GestureControlService.kt:953:42 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/gesture/GestureControlService.kt:954:33 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/gesture/SensorGestureService.kt:273:49 No value passed for parameter 'p1'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeExecutor.kt:220:35 Unresolved reference 'dndOk'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:15:17 Unresolved reference 'PrayerAlertsUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:16:18 Unresolved reference 'CopilotUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:17:18 Unresolved reference 'ExpenseUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:18:16 Unresolved reference 'FocusUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:19:14 Unresolved reference 'GeoRemindersUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:20:21 Unresolved reference 'TranslatorUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:21:14 Unresolved reference 'SosUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:58:36 No value passed for parameter 'now'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:94:18 Unresolved reference 'PrayerAlertsUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:95:19 Unresolved reference 'CopilotUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:100:19 Unresolved reference 'ExpenseUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:101:17 Unresolved reference 'FocusUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:102:15 Unresolved reference 'GeoRemindersUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:103:22 Unresolved reference 'TranslatorUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LifeUiWiring.kt:104:15 Unresolved reference 'SosUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LocationReminders.kt:203:45 Unresolved reference 'GeofenceEvent'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LocationReminders.kt:207:19 Unresolved reference 'hasError'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LocationReminders.kt:208:19 Unresolved reference 'geofenceTransition'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LocationReminders.kt:209:19 Unresolved reference 'geofenceTransition'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LocationReminders.kt:214:15 Unresolved reference 'triggeringGeofences'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LocationReminders.kt:214:46 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LocationReminders.kt:215:72 Unresolved reference 'requestId'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/life/LocationReminders.kt:216:20 Return type mismatch: expected 'ERROR CLASS: Cannot infer type variable TypeVariable(_L)', actual 'kotlin.Unit'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/MemoryBackup.kt:6:33 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/MemoryBackup.kt:83:21 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/MemoryBackup.kt:84:23 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/MemoryBackup.kt:87:9 Argument type mismatch: actual type is 'android.content.Context', but 'java.io.File' was expected.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/MemoryBackup.kt:88:9 Argument type mismatch: actual type is 'java.io.File', but 'android.content.Context' was expected.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/Recall.kt:58:49 No value passed for parameter 'repo'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/room/BalochDatabase.kt:10:33 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/room/BalochDatabase.kt:70:21 Unresolved reference 'zetetic'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/room/BalochDatabase.kt:75:21 Unresolved reference 'zetetic'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/room/BalochDatabase.kt:111:29 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/room/BalochDatabase.kt:112:31 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/room/BalochDatabase.kt:114:20 Cannot access 'constructor(p0: String, p1: String, p2: SharedPreferences, p3: Aead, p4: DeterministicAead): EncryptedSharedPreferences': it is package-private in 'androidx/security/crypto/EncryptedSharedPreferences'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/power/CricketAlerts.kt:166:59 Unresolved reference 'takeLast'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/EncryptedPrefs.kt:6:33 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/EncryptedPrefs.kt:71:28 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/EncryptedPrefs.kt:73:46 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/EncryptedPrefs.kt:74:22 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/EncryptedPrefs.kt:74:41 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/EncryptedPrefs.kt:75:13 Not enough information to infer type argument for 'K'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/EncryptedPrefs.kt:75:26 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/EncryptedPrefs.kt:75:26 Argument type mismatch: actual type is 'T', but 'K' was expected.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/EncryptedPrefs.kt:76:31 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/EncryptedPrefs.kt:78:18 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/EncryptedPrefs.kt:78:23 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/EncryptedPrefs.kt:86:9 Cannot access 'constructor(p0: String, p1: String, p2: SharedPreferences, p3: Aead, p4: DeterministicAead): EncryptedSharedPreferences': it is package-private in 'androidx/security/crypto/EncryptedSharedPreferences'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/PrivacyLog.kt:5:33 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/PrivacyLog.kt:102:30 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/PrivacyLog.kt:103:9 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/PrivacyLog.kt:104:27 Unresolved reference 'MasterKey'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/service/BalochListenerService.kt:490:23 Unresolved reference 'TTS_WARM_MS'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/service/BalochListenerService.kt:490:42 Unresolved reference 'TTS_WARM_MS'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:43:28 Unresolved reference 'PowerActions'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:45:28 Unresolved reference 'PowerUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:46:28 Unresolved reference 'loadPowerUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:48:31 Unresolved reference 'CallerIdService'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:60:29 Unresolved reference 'MemoryBackup'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:129:60 Unresolved reference 'stateIn'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:175:9 'when' expression must be exhaustive. Add the 'Qibla' branch or an 'else' branch.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:398:44 No value passed for parameter 'onChips'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:398:49 Argument type mismatch: actual type is 'kotlin.Function1<ERROR CLASS: Unknown return lambda parameter type, ERROR CLASS: Unknown return lambda parameter type>', but 'kotlin.Float?' was expected.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:398:51 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:699:45 Unresolved reference 'value'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:1205:22 Unresolved reference 'MemoryBackup'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:1220:25 Unresolved reference 'MemoryBackup'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:1283:26 Unresolved reference 'CallerIdService'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:1324:57 Unresolved reference 'gestureText'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:1325:49 Unresolved reference 'fpsText'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:1326:52 Unresolved reference 'statusText'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/BalochViewModel.kt:1454:84 Unresolved reference 'VersionInfo'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:117:22 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:119:20 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:119:31 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:154:9 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:155:21 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:200:35 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:200:46 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:221:36 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:221:47 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:221:67 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:221:78 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:240:23 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/FeatureTour.kt:240:34 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/GestureLabScreen.kt:131:32 Argument type mismatch: actual type is 'kotlin.Unit', but 'kotlin.Function0<kotlin.Unit>' was expected.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/GestureLabScreen.kt:131:40 Function invocation 'onBack()' expected.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/GestureLabScreen.kt:172:27 Argument type mismatch: actual type is 'kotlin.Unit', but 'kotlin.Function0<kotlin.Unit>' was expected.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/GestureLabScreen.kt:172:35 Function invocation 'onCalibrate()' expected.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/GestureLabScreen.kt:177:17 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/MainScreen.kt:54:39 Unresolved reference 'TextCapitalization'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/MainScreen.kt:113:32 Unresolved reference 'MemoryScreenHost'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/MainScreen.kt:493:42 Unresolved reference 'TextCapitalization'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:363:16 Unresolved reference 'LifeUiState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:364:18 Unresolved reference 'LifeActions'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:382:32 Argument type mismatch: actual type is 'kotlin.Unit', but 'kotlin.Function0<kotlin.Unit>' was expected.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:382:40 Function invocation 'onBack()' expected.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:546:39 Unresolved reference 'prayer'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:547:45 Unresolved reference 'onPrayerAlertsChanged'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:548:48 Unresolved reference 'onOpenQibla'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:551:39 Unresolved reference 'copilot'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:552:45 Unresolved reference 'onCopilotNudgesChanged'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:553:50 Unresolved reference 'onOpenClients'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:556:39 Unresolved reference 'expense'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:557:47 Unresolved reference 'onExpenseCurrencyChanged'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:558:21 No value passed for parameter 'currencies'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:558:46 Unresolved reference 'onOpenExpenseLog'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:561:39 Unresolved reference 'focus'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:562:47 Unresolved reference 'onFocusMinChanged'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:563:47 Unresolved reference 'onBreakMinChanged'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:564:47 Unresolved reference 'onStartFocusNow'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:567:39 Unresolved reference 'geo'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:568:45 Unresolved reference 'onGeoRemindersChanged'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:569:52 Unresolved reference 'onGrantLocation'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:570:46 Unresolved reference 'onOpenAddGeoReminder'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:573:39 Unresolved reference 'translator'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:574:51 Unresolved reference 'onTranslatorAutoDownloadChanged'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:575:50 Unresolved reference 'onDownloadTranslatorNow'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:578:39 Unresolved reference 'sos'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:579:46 Unresolved reference 'onSaveSosIce'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:580:47 Unresolved reference 'onGrantSms'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:594:45 No value passed for parameter 'recordings'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:594:45 No value passed for parameter 'playingPath'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:594:45 No value passed for parameter 'onPlayFile'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:594:45 No value passed for parameter 'onStopPlayback'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:594:45 No value passed for parameter 'onDeleteFile'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/SettingsScreen.kt:635:56 Unresolved reference 'VersionInfo'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/components/ChatComponents.kt:9:40 Unresolved reference 'animateColorAsState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/components/ChatComponents.kt:304:17 Unresolved reference 'animateColorAsState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/components/ChatComponents.kt:310:25 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/components/ChatComponents.kt:328:46 Unresolved reference 'copy'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/components/ChatComponents.kt:347:34 Unresolved reference 'copy'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/components/ChatComponents.kt:371:23 Unresolved reference 'animateColorAsState'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/components/ChatComponents.kt:373:25 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/components/NavChrome.kt:7:36 Unresolved reference 'minimumInteractiveComponentSize'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/components/NavChrome.kt:63:14 Unresolved reference 'minimumInteractiveComponentSize'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/components/OrbView.kt:3:37 Unresolved reference 'AccessibilityManager'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/components/OrbView.kt:48:78 Unresolved reference 'AccessibilityManager'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/components/OrbView.kt:49:17 Unresolved reference 'isEnabled'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/update/UpdateChecker.kt:285:29 Unresolved reference 'FLAG_GRANT_READ_URI'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/voice/BiometricLock.kt:44:38 Unresolved reference 'getExecutor'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/voice/VoiceOutput.kt:165:13 Unresolved reference 'withContext'.
 
 FAILURE: Build failed with an exception.
 
-* Where:
-Build file '/home/runner/work/BalochAI/BalochAI/build.gradle' line: 5
-
 * What went wrong:
-Plugin [id: 'org.jetbrains.kotlin.plugin.compose', version: '1.9.24', apply: false] was not found in any of the following sources:
-
-- Gradle Core Plugins (plugin is not in 'org.gradle' namespace)
-- Included Builds (No included builds contain this plugin)
-- Plugin Repositories (could not resolve plugin artifact 'org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:1.9.24')
-  Searched in the following repositories:
-    Google
-    MavenRepo
-    Gradle Central Plugin Repository
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
 
 * Try:
 > Run with --info or --debug option to get more log output.
@@ -33,124 +207,19 @@ Plugin [id: 'org.jetbrains.kotlin.plugin.compose', version: '1.9.24', apply: fal
 > Get more help at https://help.gradle.org.
 
 * Exception is:
-org.gradle.api.plugins.UnknownPluginException: Plugin [id: 'org.jetbrains.kotlin.plugin.compose', version: '1.9.24', apply: false] was not found in any of the following sources:
-
-- Gradle Core Plugins (plugin is not in 'org.gradle' namespace)
-- Included Builds (No included builds contain this plugin)
-- Plugin Repositories (could not resolve plugin artifact 'org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:1.9.24')
-  Searched in the following repositories:
-    Google
-    MavenRepo
-    Gradle Central Plugin Repository
-	at org.gradle.plugin.use.resolve.internal.PluginResolutionResult.getFound(PluginResolutionResult.java:112)
-	at org.gradle.plugin.use.internal.DefaultPluginRequestApplicator.resolvePluginRequest(DefaultPluginRequestApplicator.java:192)
-	at org.gradle.plugin.use.internal.DefaultPluginRequestApplicator.applyPlugins(DefaultPluginRequestApplicator.java:97)
-	at org.gradle.configuration.DefaultScriptPluginFactory$ScriptPluginImpl.apply(DefaultScriptPluginFactory.java:120)
-	at org.gradle.configuration.BuildOperationScriptPlugin$1.run(BuildOperationScriptPlugin.java:68)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:29)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:26)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:47)
-	at org.gradle.configuration.BuildOperationScriptPlugin.lambda$apply$0(BuildOperationScriptPlugin.java:65)
-	at org.gradle.internal.code.DefaultUserCodeApplicationContext.apply(DefaultUserCodeApplicationContext.java:44)
-	at org.gradle.configuration.BuildOperationScriptPlugin.apply(BuildOperationScriptPlugin.java:65)
-	at org.gradle.api.internal.project.DefaultProjectStateRegistry$ProjectStateImpl.lambda$applyToMutableState$1(DefaultProjectStateRegistry.java:407)
-	at org.gradle.api.internal.project.DefaultProjectStateRegistry$ProjectStateImpl.fromMutableState(DefaultProjectStateRegistry.java:425)
-	at org.gradle.api.internal.project.DefaultProjectStateRegistry$ProjectStateImpl.applyToMutableState(DefaultProjectStateRegistry.java:406)
-	at org.gradle.configuration.project.BuildScriptProcessor.execute(BuildScriptProcessor.java:46)
-	at org.gradle.configuration.project.BuildScriptProcessor.execute(BuildScriptProcessor.java:27)
-	at org.gradle.configuration.project.ConfigureActionsProjectEvaluator.evaluate(ConfigureActionsProjectEvaluator.java:35)
-	at org.gradle.configuration.project.LifecycleProjectEvaluator$EvaluateProject.lambda$run$0(LifecycleProjectEvaluator.java:109)
-	at org.gradle.api.internal.project.DefaultProjectStateRegistry$ProjectStateImpl.lambda$applyToMutableState$1(DefaultProjectStateRegistry.java:407)
-	at org.gradle.api.internal.project.DefaultProjectStateRegistry$ProjectStateImpl.lambda$fromMutableState$2(DefaultProjectStateRegistry.java:430)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.withReplacedLocks(DefaultWorkerLeaseService.java:363)
-	at org.gradle.api.internal.project.DefaultProjectStateRegistry$ProjectStateImpl.fromMutableState(DefaultProjectStateRegistry.java:430)
-	at org.gradle.api.internal.project.DefaultProjectStateRegistry$ProjectStateImpl.applyToMutableState(DefaultProjectStateRegistry.java:406)
-	at org.gradle.configuration.project.LifecycleProjectEvaluator$EvaluateProject.run(LifecycleProjectEvaluator.java:100)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:29)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:26)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:47)
-	at org.gradle.configuration.project.LifecycleProjectEvaluator.evaluate(LifecycleProjectEvaluator.java:72)
-	at org.gradle.api.internal.project.DefaultProject.evaluate(DefaultProject.java:756)
-	at org.gradle.api.internal.project.DefaultProject.evaluate(DefaultProject.java:157)
-	at org.gradle.api.internal.project.ProjectLifecycleController.lambda$ensureSelfConfigured$2(ProjectLifecycleController.java:84)
-	at org.gradle.internal.model.StateTransitionController.lambda$doTransition$14(StateTransitionController.java:255)
-	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
-	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:254)
-	at org.gradle.internal.model.StateTransitionController.lambda$maybeTransitionIfNotCurrentlyTransitioning$10(StateTransitionController.java:199)
-	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:34)
-	at org.gradle.internal.model.StateTransitionController.maybeTransitionIfNotCurrentlyTransitioning(StateTransitionController.java:195)
-	at org.gradle.api.internal.project.ProjectLifecycleController.ensureSelfConfigured(ProjectLifecycleController.java:84)
-	at org.gradle.api.internal.project.DefaultProjectStateRegistry$ProjectStateImpl.ensureConfigured(DefaultProjectStateRegistry.java:381)
-	at org.gradle.execution.TaskPathProjectEvaluator.configure(TaskPathProjectEvaluator.java:34)
-	at org.gradle.execution.TaskPathProjectEvaluator.configureHierarchy(TaskPathProjectEvaluator.java:48)
-	at org.gradle.configuration.DefaultProjectsPreparer.prepareProjects(DefaultProjectsPreparer.java:42)
-	at org.gradle.configuration.BuildTreePreparingProjectsPreparer.prepareProjects(BuildTreePreparingProjectsPreparer.java:65)
-	at org.gradle.configuration.BuildOperationFiringProjectsPreparer$ConfigureBuild.run(BuildOperationFiringProjectsPreparer.java:52)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:29)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:26)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:47)
-	at org.gradle.configuration.BuildOperationFiringProjectsPreparer.prepareProjects(BuildOperationFiringProjectsPreparer.java:40)
-	at org.gradle.initialization.VintageBuildModelController.lambda$prepareProjects$2(VintageBuildModelController.java:84)
-	at org.gradle.internal.model.StateTransitionController.lambda$doTransition$14(StateTransitionController.java:255)
-	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
-	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:254)
-	at org.gradle.internal.model.StateTransitionController.lambda$transitionIfNotPreviously$11(StateTransitionController.java:213)
-	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:34)
-	at org.gradle.internal.model.StateTransitionController.transitionIfNotPreviously(StateTransitionController.java:209)
-	at org.gradle.initialization.VintageBuildModelController.prepareProjects(VintageBuildModelController.java:84)
-	at org.gradle.initialization.VintageBuildModelController.prepareToScheduleTasks(VintageBuildModelController.java:71)
-	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$prepareToScheduleTasks$6(DefaultBuildLifecycleController.java:175)
-	at org.gradle.internal.model.StateTransitionController.lambda$doTransition$14(StateTransitionController.java:255)
-	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
-	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:254)
-	at org.gradle.internal.model.StateTransitionController.lambda$maybeTransition$9(StateTransitionController.java:190)
-	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:34)
-	at org.gradle.internal.model.StateTransitionController.maybeTransition(StateTransitionController.java:186)
-	at org.gradle.internal.build.DefaultBuildLifecycleController.prepareToScheduleTasks(DefaultBuildLifecycleController.java:173)
-	at org.gradle.internal.buildtree.DefaultBuildTreeWorkPreparer.scheduleRequestedTasks(DefaultBuildTreeWorkPreparer.java:36)
-	at org.gradle.internal.cc.impl.VintageBuildTreeWorkController$scheduleAndRunRequestedTasks$1.apply(VintageBuildTreeWorkController.kt:36)
-	at org.gradle.internal.cc.impl.VintageBuildTreeWorkController$scheduleAndRunRequestedTasks$1.apply(VintageBuildTreeWorkController.kt:35)
-	at org.gradle.composite.internal.DefaultIncludedBuildTaskGraph.withNewWorkGraph(DefaultIncludedBuildTaskGraph.java:112)
-	at org.gradle.internal.cc.impl.VintageBuildTreeWorkController.scheduleAndRunRequestedTasks(VintageBuildTreeWorkController.kt:35)
-	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.lambda$scheduleAndRunTasks$1(DefaultBuildTreeLifecycleController.java:77)
-	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.lambda$runBuild$4(DefaultBuildTreeLifecycleController.java:120)
-	at org.gradle.internal.model.StateTransitionController.lambda$transition$6(StateTransitionController.java:169)
-	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
-	at org.gradle.internal.model.StateTransitionController.lambda$transition$7(StateTransitionController.java:169)
-	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:44)
-	at org.gradle.internal.model.StateTransitionController.transition(StateTransitionController.java:169)
-	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.runBuild(DefaultBuildTreeLifecycleController.java:117)
-	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.scheduleAndRunTasks(DefaultBuildTreeLifecycleController.java:77)
-	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.scheduleAndRunTasks(DefaultBuildTreeLifecycleController.java:72)
-	at org.gradle.tooling.internal.provider.ExecuteBuildActionRunner.run(ExecuteBuildActionRunner.java:31)
-	at org.gradle.launcher.exec.ChainingBuildActionRunner.run(ChainingBuildActionRunner.java:35)
-	at org.gradle.internal.buildtree.ProblemReportingBuildActionRunner.run(ProblemReportingBuildActionRunner.java:49)
-	at org.gradle.launcher.exec.BuildOutcomeReportingBuildActionRunner.run(BuildOutcomeReportingBuildActionRunner.java:65)
-	at org.gradle.tooling.internal.provider.FileSystemWatchingBuildActionRunner.run(FileSystemWatchingBuildActionRunner.java:140)
-	at org.gradle.launcher.exec.BuildCompletionNotifyingBuildActionRunner.run(BuildCompletionNotifyingBuildActionRunner.java:41)
-	at org.gradle.launcher.exec.RootBuildLifecycleBuildActionExecutor.lambda$execute$0(RootBuildLifecycleBuildActionExecutor.java:40)
-	at org.gradle.composite.internal.DefaultRootBuildState.run(DefaultRootBuildState.java:130)
-	at org.gradle.launcher.exec.RootBuildLifecycleBuildActionExecutor.execute(RootBuildLifecycleBuildActionExecutor.java:40)
-	at org.gradle.internal.buildtree.InitDeprecationLoggingActionExecutor.execute(InitDeprecationLoggingActionExecutor.java:62)
-	at org.gradle.internal.buildtree.InitProblems.execute(InitProblems.java:36)
-	at org.gradle.internal.buildtree.DefaultBuildTreeContext.execute(DefaultBuildTreeContext.java:40)
-	at org.gradle.launcher.exec.BuildTreeLifecycleBuildActionExecutor.lambda$execute$0(BuildTreeLifecycleBuildActionExecutor.java:71)
-	at org.gradle.internal.buildtree.BuildTreeState.run(BuildTreeState.java:60)
-	at org.gradle.launcher.exec.BuildTreeLifecycleBuildActionExecutor.execute(BuildTreeLifecycleBuildActionExecutor.java:71)
-	at org.gradle.launcher.exec.RunAsBuildOperationBuildActionExecutor$3.call(RunAsBuildOperationBuildActionExecutor.java:61)
-	at org.gradle.launcher.exec.RunAsBuildOperationBuildActionExecutor$3.call(RunAsBuildOperationBuildActionExecutor.java:57)
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileDebugKotlin'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
@@ -158,50 +227,174 @@ org.gradle.api.plugins.UnknownPluginException: Plugin [id: 'org.jetbrains.kotlin
 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
-	at org.gradle.launcher.exec.RunAsBuildOperationBuildActionExecutor.execute(RunAsBuildOperationBuildActionExecutor.java:57)
-	at org.gradle.launcher.exec.RunAsWorkerThreadBuildActionExecutor.lambda$execute$0(RunAsWorkerThreadBuildActionExecutor.java:36)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:267)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:131)
-	at org.gradle.launcher.exec.RunAsWorkerThreadBuildActionExecutor.execute(RunAsWorkerThreadBuildActionExecutor.java:36)
-	at org.gradle.tooling.internal.provider.continuous.ContinuousBuildActionExecutor.execute(ContinuousBuildActionExecutor.java:110)
-	at org.gradle.tooling.internal.provider.SubscribableBuildActionExecutor.execute(SubscribableBuildActionExecutor.java:64)
-	at org.gradle.internal.session.DefaultBuildSessionContext.execute(DefaultBuildSessionContext.java:46)
-	at org.gradle.internal.buildprocess.execution.BuildSessionLifecycleBuildActionExecutor$ActionImpl.apply(BuildSessionLifecycleBuildActionExecutor.java:92)
-	at org.gradle.internal.buildprocess.execution.BuildSessionLifecycleBuildActionExecutor$ActionImpl.apply(BuildSessionLifecycleBuildActionExecutor.java:80)
-	at org.gradle.internal.session.BuildSessionState.run(BuildSessionState.java:71)
-	at org.gradle.internal.buildprocess.execution.BuildSessionLifecycleBuildActionExecutor.execute(BuildSessionLifecycleBuildActionExecutor.java:62)
-	at org.gradle.internal.buildprocess.execution.BuildSessionLifecycleBuildActionExecutor.execute(BuildSessionLifecycleBuildActionExecutor.java:41)
-	at org.gradle.internal.buildprocess.execution.StartParamsValidatingActionExecutor.execute(StartParamsValidatingActionExecutor.java:64)
-	at org.gradle.internal.buildprocess.execution.StartParamsValidatingActionExecutor.execute(StartParamsValidatingActionExecutor.java:32)
-	at org.gradle.internal.buildprocess.execution.SessionFailureReportingActionExecutor.execute(SessionFailureReportingActionExecutor.java:51)
-	at org.gradle.internal.buildprocess.execution.SessionFailureReportingActionExecutor.execute(SessionFailureReportingActionExecutor.java:39)
-	at org.gradle.internal.buildprocess.execution.SetupLoggingActionExecutor.execute(SetupLoggingActionExecutor.java:47)
-	at org.gradle.internal.buildprocess.execution.SetupLoggingActionExecutor.execute(SetupLoggingActionExecutor.java:31)
-	at org.gradle.launcher.daemon.server.exec.ExecuteBuild.doBuild(ExecuteBuild.java:70)
-	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:37)
-	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
-	at org.gradle.launcher.daemon.server.exec.WatchForDisconnection.execute(WatchForDisconnection.java:39)
-	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
-	at org.gradle.launcher.daemon.server.exec.ResetDeprecationLogger.execute(ResetDeprecationLogger.java:29)
-	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
-	at org.gradle.launcher.daemon.server.exec.RequestStopIfSingleUsedDaemon.execute(RequestStopIfSingleUsedDaemon.java:35)
-	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
-	at org.gradle.launcher.daemon.server.exec.ForwardClientInput.lambda$execute$0(ForwardClientInput.java:40)
-	at org.gradle.internal.daemon.clientinput.ClientInputForwarder.forwardInput(ClientInputForwarder.java:80)
-	at org.gradle.launcher.daemon.server.exec.ForwardClientInput.execute(ForwardClientInput.java:37)
-	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
-	at org.gradle.launcher.daemon.server.exec.LogAndCheckHealth.execute(LogAndCheckHealth.java:53)
-	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
-	at org.gradle.launcher.daemon.server.exec.LogToClient.doBuild(LogToClient.java:63)
-	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:37)
-	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
-	at org.gradle.launcher.daemon.server.exec.EstablishBuildEnvironment.doBuild(EstablishBuildEnvironment.java:84)
-	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:37)
-	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
-	at org.gradle.launcher.daemon.server.exec.StartBuildOrRespondWithBusy$1.run(StartBuildOrRespondWithBusy.java:52)
-	at org.gradle.launcher.daemon.server.DaemonStateCoordinator.lambda$runCommand$0(DaemonStateCoordinator.java:320)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+	at org.gradle.workers.internal.DefaultWorkerExecutor$WorkItemExecution.waitForCompletion(DefaultWorkerExecutor.java:287)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailures$2(DefaultAsyncWorkTracker.java:130)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:339)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:322)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLock(DefaultWorkerLeaseService.java:327)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:126)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:92)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForAll(DefaultAsyncWorkTracker.java:78)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForCompletion(DefaultAsyncWorkTracker.java:66)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:252)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:29)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:26)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:47)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:229)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:212)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:195)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:162)
+	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:105)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:59)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:56)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:56)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:50)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:28)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:37)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:61)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:26)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:40)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:29)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.java:75)
+	at org.gradle.internal.Either$Right.fold(Either.java:175)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:73)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:48)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:35)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:49)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:27)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:71)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:65)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:36)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:105)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:54)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:64)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:43)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySources(AbstractSkipEmptyWorkStep.java:125)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:61)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:36)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:75)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:41)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(AssignMutableWorkspaceStep.java:35)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:289)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:31)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:22)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:61)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:127)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
+	at org.jetbrains.kotlin.gradle.tasks.TasksUtilsKt.throwExceptionIfCompilationFailed(tasksUtils.kt:21)
+	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.run(GradleKotlinCompilerWork.kt:119)
+	at org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction.execute(GradleCompilerRunnerWithWorkers.kt:76)
+	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)
+	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorkerExecutor.java:174)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:195)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:128)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:170)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:267)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:131)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:136)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:165)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:134)
+	... 2 more
 
 
-BUILD FAILED in 7s
+BUILD FAILED in 2m 26s
+30 actionable tasks: 30 executed

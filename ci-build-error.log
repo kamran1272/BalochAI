@@ -21,10 +21,11 @@ Daemon will be stopped at the end of the build
 > Task :app:packageDebugResources
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
-> Task :app:parseDebugLocalResources
 > Task :app:mergeDebugResources
+> Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
@@ -32,36 +33,23 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeDebugAssets
 > Task :app:compressDebugAssets
 > Task :app:desugarDebugFileDependencies
-> Task :app:mergeDebugStartupProfile
-> Task :app:mergeDebugJniLibFolders
-> Task :app:checkDebugDuplicateClasses
-> Task :app:processDebugManifestForPackage
-> Task :app:mergeDebugNativeLibs
 > Task :app:processDebugResources
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugStartupProfile
+> Task :app:kspDebugKotlin
 > Task :app:mergeExtDexDebug
+> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeLibDexDebug
+> Task :app:mergeDebugNativeLibs
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
 
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libdatastore_shared_counter.so, libjnidispatch.so, libllm_inference_engine_jni.so, libmediapipe_tasks_vision_jni.so, libsqlcipher.so, libtranslate_jni.so, libvosk.so.
 
-> Task :app:validateSigningDebug
-> Task :app:writeDebugAppMetadata
-> Task :app:writeDebugSigningConfigVersions
-> Task :app:kspDebugKotlin
-
 > Task :app:compileDebugKotlin FAILED
-e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/brain/LlmBrain.kt:170:18 Unresolved reference 'setRandomSeed'.
-e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/MemoryBackup.kt:89:26 None of the following candidates is applicable:
-constructor(p0: @NonNull() File!, p1: @NonNull() Context!, p2: @NonNull() String!, p3: @NonNull() EncryptedFile.FileEncryptionScheme!): EncryptedFile.Builder
-constructor(p0: @NonNull() Context!, p1: @NonNull() File!, p2: @NonNull() MasterKey!, p3: @NonNull() EncryptedFile.FileEncryptionScheme!): EncryptedFile.Builder
-e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/memory/MemoryBackup.kt:94:7 Unresolved reference 'build'.
-e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/PrivacyLog.kt:108:23 None of the following candidates is applicable:
-constructor(p0: @NonNull() File!, p1: @NonNull() Context!, p2: @NonNull() String!, p3: @NonNull() EncryptedFile.FileEncryptionScheme!): EncryptedFile.Builder
-constructor(p0: @NonNull() Context!, p1: @NonNull() File!, p2: @NonNull() MasterKey!, p3: @NonNull() EncryptedFile.FileEncryptionScheme!): EncryptedFile.Builder
-e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/privacy/PrivacyLog.kt:113:11 Unresolved reference 'build'.
-e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/MainScreen.kt:54:41 Unresolved reference 'KeyboardCapitalization'.
-e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/MainScreen.kt:493:42 Unresolved reference 'KeyboardCapitalization'.
-e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/update/UpdateChecker.kt:285:29 Unresolved reference 'FLAG_GRANT_READ_URI'.
+e: file:///home/runner/work/BalochAI/BalochAI/app/src/main/java/com/baloch/ai/ui/MainScreen.kt:436:38 Unresolved reference 'lastVoiceError'.
 
 FAILURE: Build failed with an exception.
 
@@ -265,5 +253,5 @@ Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilat
 	... 2 more
 
 
-BUILD FAILED in 2m 35s
+BUILD FAILED in 2m 34s
 30 actionable tasks: 30 executed

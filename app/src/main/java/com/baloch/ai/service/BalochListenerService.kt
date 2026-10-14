@@ -699,6 +699,8 @@ class BalochListenerService : Service() {
 
         private const val CHIME_MS = 180
         private const val MAX_ACTION_CHARS = 42
+        /** TTS engine init window after a cold service start (see ensureTtsWarm). */
+        private const val TTS_WARM_MS = 1200L
 
         /**
          * Fail-safe keyword net for destructive commands (see

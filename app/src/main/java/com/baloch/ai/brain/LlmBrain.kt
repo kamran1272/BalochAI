@@ -19,9 +19,11 @@ import kotlinx.coroutines.withTimeout
  *       .setModelPath(absolutePath)   // .bin / .task on disk, NOT assets
  *       .setMaxTokens(2048)
  *       .setMaxTopK(40)
- *       .setTemperature(0.7f)
  *       .setRandomSeed(seed)
  *       .build()
+ *   // NOTE: temperature is a SESSION-level option in tasks-genai 0.10.27
+ *   // (LlmInferenceSession.LlmInferenceSessionOptions.setTemperature) —
+ *   // there is no setTemperature on LlmInferenceOptions.Builder.
  *   val engine = LlmInference.createFromOptions(context, options)
  *   val reply: String = engine.generateResponse(prompt)  // blocking → IO thread
  *   engine.close()
@@ -165,7 +167,6 @@ class LlmBrain(
                 .setModelPath(path)
                 .setMaxTokens(MAX_TOKENS)
                 .setMaxTopK(TOP_K)
-                .setTemperature(TEMPERATURE)
                 .setRandomSeed((System.currentTimeMillis() % Int.MAX_VALUE).toInt())
                 .build()
             val created = withContext(Dispatchers.IO) {
@@ -256,7 +257,6 @@ class LlmBrain(
     companion object {
         private const val MAX_TOKENS = 2048      // input + output budget
         private const val TOP_K = 40
-        private const val TEMPERATURE = 0.7f
         private const val GENERATE_TIMEOUT_MS = 120_000L
         private const val MAX_HISTORY_TURNS = 3
         private const val MAX_HISTORY_CHARS = 300

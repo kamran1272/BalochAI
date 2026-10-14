@@ -11,12 +11,12 @@
 Built around the official **Obsidian Cube** logo — deep black facets, glowing cyan core.
 
 <p align="center">
-  <img src="https://github.com/kamran1272/BalochAI/releases/download/v1.0.0/logo-obsidian-cube.webp" alt="Baloch Obsidian Cube logo" width="180" />
+  <img src="docs/images/logo-obsidian-cube.webp" alt="Baloch Obsidian Cube logo" width="180" />
 </p>
 
 | Splash | Main | Settings | Memory |
 |---|---|---|---|
-| ![Splash concept](https://github.com/kamran1272/BalochAI/releases/download/v1.0.0/ui-splash.webp) | ![Main screen concept](https://github.com/kamran1272/BalochAI/releases/download/v1.0.0/ui-main.webp) | ![Settings concept](https://github.com/kamran1272/BalochAI/releases/download/v1.0.0/ui-settings.webp) | ![Memory screen concept](https://github.com/kamran1272/BalochAI/releases/download/v1.0.0/ui-memory.webp) |
+| ![Splash concept](docs/images/ui-splash.webp) | ![Main screen concept](docs/images/ui-main.webp) | ![Settings concept](docs/images/ui-settings.webp) | ![Memory screen concept](docs/images/ui-memory.webp) |
 
 > *Honesty note: these are the official design mock-ups that define Baloch's look — concept visuals, not screenshots of the compiled app.*
 

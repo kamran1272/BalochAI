@@ -201,6 +201,7 @@ private fun MainContent(viewModel: BalochViewModel) {
     val listening by viewModel.listening.collectAsState()
     val orbState by viewModel.orbState.collectAsState()
     val lang by viewModel.language.collectAsState()
+    val lastVoiceError by viewModel.lastVoiceError.collectAsState()
     val pending by viewModel.pendingConfirmation.collectAsState()
     val voiceOn by viewModel.voiceOn.collectAsState()
     val chips by viewModel.agentChips.collectAsState()

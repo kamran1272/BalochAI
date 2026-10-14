@@ -18,6 +18,8 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+
+
       - name: Install Android SDK
         run: |
           export ANDROID_HOME=$HOME/android-sdk
@@ -127,16 +129,39 @@ jobs:
           name: baloch-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
 
+      - name: Read version (single source of truth)
+        # VersionInfo.kt is the factory's source of truth (see its header
+        # comment): the release tag AND the release name are derived from it
+        # so they can never drift from what the app reports.
+        run: |
+          VN=$(grep -oP 'APP_VERSION_NAME = "\K[^"]+' app/src/main/java/com/baloch/ai/update/VersionInfo.kt)
+          VC=$(grep -oP 'APP_VERSION_CODE = \K[0-9]+' app/src/main/java/com/baloch/ai/update/VersionInfo.kt)
+          echo "VERSION_NAME=$VN" >> $GITHUB_ENV
+          echo "VERSION_CODE=$VC" >> $GITHUB_ENV
+          echo "RELEASE_TAG=v$VN" >> $GITHUB_ENV
+          # FACTORY CONTRACT (UpdateChecker.kt): the release NAME must read
+          # `v1.0.2 (code 3)` — the updater parses name + code from it.
+          # A name like "Baloch v1.0.2" does NOT parse and the in-app
+          # updater shows nothing.
+          echo "RELEASE_NAME=v$VN (code $VC)" >> $GITHUB_ENV
+          # Changelog = the topmost ## [x.y.z] section of CHANGELOG.md.
+          awk '/^## \[/{if(++c==2) exit; next} c==1' CHANGELOG.md > /tmp/changelog.txt
+          {
+            echo "RELEASE_BODY<<EOF"
+            cat /tmp/changelog.txt
+            echo ""
+            echo "Package: com.baloch.ai | minSdk 26 | targetSdk 34"
+            echo "Install the APK below — or update from inside the app (Settings → Check for updates)."
+            echo "EOF"
+          } >> $GITHUB_ENV
+
       - name: Create GitHub Release
         if: env.GRADLE_EXIT == '0' && github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.1
-          name: Baloch v1.0.1
-          body: |
-            Baloch v1.0.1 — JARVIS-style on-device AI assistant for Android.
-            Package: com.baloch.ai | minSdk 26 | targetSdk 34
-            Install the APK below, grant permissions on first run.
-            Visuals: official design mock-ups (concept art, not app screenshots).
+          tag_name: ${{ env.RELEASE_TAG }}
+          name: ${{ env.RELEASE_NAME }}
+          body: ${{ env.RELEASE_BODY }}
           files: |
             app/build/outputs/apk/debug/app-debug.apk
+            

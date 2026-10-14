@@ -26,7 +26,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,6 +50,10 @@ import com.baloch.ai.life.LifeUiState
 import com.baloch.ai.settings.BalochMode
 import com.baloch.ai.settings.BrainMode
 import com.baloch.ai.ui.components.BackLabel
+import com.baloch.ai.ui.components.NoticeCard
+import com.baloch.ai.ui.components.NoticeTone
+import com.baloch.ai.ui.components.SettingsDivider
+import com.baloch.ai.ui.components.balochSwitchColors
 import com.baloch.ai.ui.theme.BalochAmber
 import com.baloch.ai.ui.theme.BalochBlack
 import com.baloch.ai.ui.theme.BalochCyan
@@ -134,6 +138,13 @@ data class SettingsState(
     val aiModelRamGb: Double = 0.0,
     /** False on < 4 GB devices — download button must be hidden/disabled. */
     val aiModelRamOk: Boolean = true,
+    /** Protection mode (Fortress Privacy): ON blocks screenshots & screen recording. */
+    val protectionMode: Boolean = true,
+    /**
+     * Voice self-test result: null when idle, otherwise the heard text or
+     * the exact failure reason (see VoiceInput.describeError).
+     */
+    val voiceTestResult: String? = null,
 )
 
 /**
@@ -156,6 +167,21 @@ interface SettingsActions {
      * Baloch replies softly when Kamran whispers.
      */
     fun onQuietVoiceModeChange(enabled: Boolean)
+
+    /**
+     * Protection mode (Fortress Privacy). Contract: persist via
+     * ProtectionMode; MainActivity re-applies FLAG_SECURE in onResume, so
+     * the switch takes effect the moment the user leaves Settings —
+     * no restart needed.
+     */
+    fun onProtectionModeChange(enabled: Boolean)
+
+    /**
+     * Voice input self-test. Contract: parent runs one VoiceInput listen
+     * and writes the heard text — or the exact failure reason — into
+     * [SettingsState.voiceTestResult]. Never processes commands.
+     */
+    fun onTestVoiceInput()
 
     /** Open the standalone VoiceSettingsScreen (voice identity + volume). */
     fun onOpenVoiceSettings()
@@ -421,6 +447,19 @@ fun SettingsScreen(
                 subtitle = "Locked male voice, preview, loudness (default FULL).",
                 onClick = actions::onOpenVoiceSettings,
             )
+            SettingsNavRow(
+                title = "Test voice input",
+                subtitle = "Speak a test phrase — shows what I heard, or exactly why I couldn't.",
+                onClick = actions::onTestVoiceInput,
+            )
+            // Voice test result: a calm notice card, never alarming — a
+            // failed listen is a hint ("speak closer"), not an error.
+            state.voiceTestResult?.let { result ->
+                NoticeCard(
+                    text = result,
+                    tone = NoticeTone.WARN,
+                )
+            }
         }
 
         // ── 🔐 SECURITY ──
@@ -624,6 +663,15 @@ fun SettingsScreen(
         // ── 🔒 PRIVACY & PERMISSIONS ──
         SettingsSection("🔒", "PRIVACY & PERMISSIONS",
             "Why Baloch wants each permission. Grant opens the app's system settings — flip it there, come back.") {
+            SettingsToggleRow(
+                title = "Protection mode",
+                subtitle = if (state.protectionMode)
+                    "ON — screenshots and screen recording are blocked."
+                else "OFF — you can capture the screen (for example, to report an issue).",
+                checked = state.protectionMode,
+                onChecked = actions::onProtectionModeChange,
+            )
+            SettingsDivider()
             PERMISSION_ROWS.forEach { info ->
                 PermissionRow(
                     info = info,
@@ -844,12 +892,20 @@ private fun SettingsToggleRow(
     onChecked: (Boolean) -> Unit,
 ) {
     val mono = FontFamily.Monospace
+    // The whole row is the touch target (48dp+ tall): tapping anywhere
+    // flips the switch — the Switch itself is display-only here so a tap
+    // never fires twice.
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
             .background(BalochBlack.copy(alpha = 0.35f))
+            .clickable(
+                enabled = enabled,
+                role = Role.Switch,
+                onClick = { onChecked(!checked) },
+            )
             .padding(12.dp),
     ) {
         Column(Modifier.weight(1f)) {
@@ -861,15 +917,8 @@ private fun SettingsToggleRow(
         Switch(
             checked = checked,
             enabled = enabled,
-            onCheckedChange = onChecked,
-            colors = SwitchDefaults.colors(
-                checkedThumbColor = BalochBlack,
-                checkedTrackColor = BalochCyan,
-                uncheckedThumbColor = BalochTextDim,
-                uncheckedTrackColor = BalochPanelBorder,
-                checkedBorderColor = BalochCyan,
-                uncheckedBorderColor = BalochPanelBorder,
-            ),
+            onCheckedChange = null,
+            colors = balochSwitchColors(),
         )
     }
     Spacer(Modifier.height(6.dp))

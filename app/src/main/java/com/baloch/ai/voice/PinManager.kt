@@ -1,11 +1,8 @@
 package com.baloch.ai.voice
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -102,7 +99,3 @@ class PinManager(private val appContext: Context) {
         private val KEY_PIN_HASH = stringPreferencesKey("pin_hash")
     }
 }
-
-/** Same "voice_lock" store as VoiceLockManager — one file, all lock state. */
-private val Context.voiceLockStore: DataStore<Preferences> by
-    preferencesDataStore(name = "voice_lock")

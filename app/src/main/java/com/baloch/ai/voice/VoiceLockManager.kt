@@ -1,12 +1,9 @@
 package com.baloch.ai.voice
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
@@ -469,7 +466,3 @@ class VoiceLockManager(private val appContext: Context) {
         val KEY_BIOMETRIC_LOCK = booleanPreferencesKey("biometric_lock")
     }
 }
-
-/** Shared DataStore for ALL voice-lock state (voiceprint, PIN hash, toggles). */
-private val Context.voiceLockStore: DataStore<Preferences> by
-    preferencesDataStore(name = "voice_lock")

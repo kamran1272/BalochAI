@@ -41,6 +41,13 @@ class VoiceInput(private val context: Context) {
 
     fun isAvailable(): Boolean = SpeechRecognizer.isRecognitionAvailable(context)
 
+    /**
+     * True when the on-device Vosk model is provisioned — the fully-offline
+     * command path can run without the platform recogniser or the network.
+     */
+    fun isOfflineReady(): Boolean =
+        try { OfflineSpeechInput(context).isReady() } catch (_: Exception) { false }
+
     fun startListening(
         lang: BalochLanguage,
         onPartial: (String) -> Unit,
@@ -201,5 +208,50 @@ class VoiceInput(private val context: Context) {
     companion object {
         /** Mic window for the offline command capture (see captureUtterance). */
         private const val OFFLINE_CAPTURE_MS = 5000L
+
+        /**
+         * Human-readable reason for a VoiceInput onError code — shown in the
+         * UI so a failed listen explains itself instead of failing silently.
+         * Codes are "unavailable", "empty", or "error:<SpeechRecognizer int>".
+         * en-GB spelling throughout (user-visible strings).
+         */
+        fun describeError(code: String): String = when (code) {
+            "unavailable" ->
+                "Speech recognition isn't available on this device — check that " +
+                    "Google voice services are installed and updated, or download " +
+                    "the offline voice model."
+            "empty" ->
+                "I heard nothing — speak a little louder and try again."
+            "offline-model-missing" ->
+                "Offline voice model not downloaded — fetch it from Settings, " +
+                    "or stay connected for online recognition."
+            else -> {
+                val n = code.removePrefix("error:").toIntOrNull()
+                when (n) {
+                    SpeechRecognizer.ERROR_NO_MATCH ->
+                        "I couldn't understand that — try speaking closer to the phone."
+                    SpeechRecognizer.ERROR_SPEECH_TIMEOUT ->
+                        "I didn't hear anything — check the microphone isn't covered."
+                    SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS ->
+                        "Microphone permission denied — enable it in system Settings."
+                    SpeechRecognizer.ERROR_NETWORK ->
+                        "Network error during recognition — check your connection."
+                    SpeechRecognizer.ERROR_NETWORK_TIMEOUT ->
+                        "Recognition timed out waiting for the network."
+                    SpeechRecognizer.ERROR_SERVER ->
+                        "The recognition server had a problem — try again in a moment."
+                    SpeechRecognizer.ERROR_RECOGNIZER_BUSY ->
+                        "The recogniser is busy — wait a moment and try again."
+                    SpeechRecognizer.ERROR_AUDIO ->
+                        "Audio recording failed — another app may be using the microphone."
+                    SpeechRecognizer.ERROR_CLIENT ->
+                        "Recognition was interrupted — try again."
+                    SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED,
+                    SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE ->
+                        "That language isn't supported for voice input on this device."
+                    else -> "Voice input failed ($code) — try again."
+                }
+            }
+        }
     }
 }

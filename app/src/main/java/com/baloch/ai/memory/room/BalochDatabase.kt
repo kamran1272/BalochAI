@@ -67,12 +67,12 @@ abstract class BalochDatabase : RoomDatabase() {
             // Try the encrypted path first.
             val factory = try {
                 // Step 1: make sure the SQLCipher native libraries are loaded.
-                net.zetetic.database.sqlcipher.SQLiteDatabase.loadLibs(appContext)
+                net.sqlcipher.database.SQLiteDatabase.loadLibs(appContext)
                 // Step 2: load (or generate) the 256-bit passphrase.
                 val passphrase = loadOrCreatePassphrase(appContext)
                 // Step 3: SupportFactory is passed to Room via openHelperFactory —
                 // Room then opens the file through SQLCipher instead of stock SQLite.
-                net.zetetic.database.sqlcipher.SupportFactory(passphrase)
+                net.sqlcipher.database.SupportFactory(passphrase)
             } catch (e: Exception) {
                 // Anything goes wrong (native lib missing, keystore broken):
                 // fall back to plain Room. The flag tells the UI the truth.
@@ -111,7 +111,7 @@ abstract class BalochDatabase : RoomDatabase() {
             val masterKey = MasterKey.Builder(context, "baloch_master_key")
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                 .build()
-            return EncryptedSharedPreferences(
+            return EncryptedSharedPreferences.create(
                 context,
                 CRYPTO_PREFS,
                 masterKey,

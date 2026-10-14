@@ -7,6 +7,7 @@ import android.content.Intent
 import com.baloch.ai.brain.BalochLanguage
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
+import com.google.android.gms.location.GeofencingEvent
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -200,7 +201,7 @@ class GeofenceTransitionReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val event = try {
-            com.google.android.gms.location.GeofenceEvent.fromIntent(intent)
+            GeofencingEvent.fromIntent(intent)
         } catch (_: Exception) {
             null
         } ?: return

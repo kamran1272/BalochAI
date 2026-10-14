@@ -83,7 +83,7 @@ object EncryptedPrefs {
      * access. All reads/writes behave exactly like SharedPreferences.
      */
     fun get(context: Context, name: String): SharedPreferences =
-        EncryptedSharedPreferences(
+        EncryptedSharedPreferences.create(
             context.applicationContext,
             name,
             masterKey(context),

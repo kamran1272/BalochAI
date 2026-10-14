@@ -55,7 +55,7 @@ private suspend fun answerSpecificRecall(
     val t = input.lowercase()
 
     // "favourite X" / "favorite X" / "pasand" + topic → search key containing X.
-    val topic = extractTopic(t) ?: keywordTopic(t)
+    val topic = extractTopic(t) ?: keywordTopic(t, repo)
     if (topic == null || topic.length < 2) return null
 
     val hits = repo.searchFacts(topic)

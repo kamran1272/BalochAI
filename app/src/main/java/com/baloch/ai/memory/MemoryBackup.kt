@@ -32,6 +32,9 @@ import java.io.File
  * file cannot be decrypted. This is the price of zero-cloud true privacy.
  */
 
+/** One-tap encrypted memory backup, as an object for call-site namespacing. */
+object MemoryBackup {
+
 /** Exports the whole memory, encrypted, to [uri]. True on success. */
 suspend fun exportToFile(context: Context, uri: Uri): Boolean =
     withContext(Dispatchers.IO) {
@@ -84,9 +87,11 @@ private fun encryptedFile(context: Context, file: File): EncryptedFile {
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
         .build()
     return EncryptedFile.Builder(
-        context,
         file,
+        context,
         masterKey,
         EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB,
     ).build()
 }
+
+} // object MemoryBackup

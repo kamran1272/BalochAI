@@ -4,6 +4,13 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
+import com.baloch.ai.ui.CopilotUiState
+import com.baloch.ai.ui.ExpenseUiState
+import com.baloch.ai.ui.FocusUiState
+import com.baloch.ai.ui.GeoRemindersUiState
+import com.baloch.ai.ui.PrayerAlertsUiState
+import com.baloch.ai.ui.SosUiState
+import com.baloch.ai.ui.TranslatorUiState
 import java.util.Calendar
 
 /**
@@ -55,7 +62,7 @@ fun loadLifeUiState(context: Context): LifeUiState {
 
     // Freelance copilot
     val clients = try { ClientStore(context).all() } catch (_: Exception) { emptyList() }
-    val stale = try { staleClients(clients).size } catch (_: Exception) { 0 }
+    val stale = try { staleClients(clients, System.currentTimeMillis()).size } catch (_: Exception) { 0 }
 
     // Expenses
     val currency = lifePrefs.getString("expense_currency", "PKR") ?: "PKR"

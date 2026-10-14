@@ -217,7 +217,7 @@ object LifeExecutor {
         val mins = minutes ?: 25
         return try {
             val res = FocusManager.startFocus(appCtx, mins, 5)
-            val dndNote = if (res.dndOk) "" else L3(
+            val dndNote = if (res.dndEnabled) "" else L3(
                 " (DND needs the grant: Settings → Apps → Baloch → Do Not Disturb access)",
                 " (DND کے لیے اجازت: Settings → Apps → Baloch → Do Not Disturb access)",
                 " (DND के लिए अनुमति: Settings → Apps → Baloch → Do Not Disturb access)",

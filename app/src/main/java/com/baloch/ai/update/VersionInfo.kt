@@ -18,5 +18,7 @@ package com.baloch.ai.update
  * 4. After bumping, add the release notes to CHANGELOG.md and the dev
  *    notes to VERSIONS.md (both at the project root).
  */
-const val APP_VERSION_NAME = "1.0.0"
-const val APP_VERSION_CODE = 1
+object VersionInfo {
+    const val APP_VERSION_NAME = "1.0.0"
+    const val APP_VERSION_CODE = 1
+}

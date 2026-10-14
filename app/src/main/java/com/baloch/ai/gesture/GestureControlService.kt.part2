@@ -1,0 +1,35 @@
+endedTipDist[i] * 0.82f -> FingerState.EXTENDED
+                d <= profile.curledTipDist[i] * 1.18f -> FingerState.CURLED
+                else -> FingerState.UNCERTAIN
+            }
+        }
+        if (states.any { it == FingerState.UNCERTAIN }) return null
+
+        val thumbTipD = HandMath.dist(
+            landmarks[HandMath.THUMB_TIP], landmarks[HandMath.WRIST])
+        val thumbExtended = thumbTipD >= profile.thumbExtendedDist * 0.85f
+        val allExtended = states.all { it == FingerState.EXTENDED }
+        val allCurled = states.all { it == FingerState.CURLED }
+
+        // Thumb up/down: thumb out, others curled, thumb roughly vertical.
+        if (thumbExtended && allCurled) {
+            val tip = landmarks[HandMath.THUMB_TIP]
+            val ip = landmarks[HandMath.THUMB_IP]
+            val dy = tip.y() - ip.y() // image coords: y grows downward
+            val dx = tip.x() - ip.x()
+            if (kotlin.math.abs(dy) > kotlin.math.abs(dx) * 1.2f) {
+                return when {
+                    dy < -0.015f -> GestureKind.THUMB_UP
+                    dy > 0.015f -> GestureKind.THUMB_DOWN
+                    else -> null
+                }
+            }
+            return null
+        }
+        if (allExtended && thumbExtended) return GestureKind.PALM_HOLD
+        if (allCurled && !thumbExtended) return GestureKind.FIST
+        return null
+    }
+
+    private enum class FingerState { EXTENDED, CURLED, UNCERTAIN }
+}

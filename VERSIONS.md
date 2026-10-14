@@ -4,6 +4,52 @@
 release: what went into each version, the sharp edges found, and the
 migration state. The user-facing notes live in [CHANGELOG.md](CHANGELOG.md).
 
+## v1.0.2 (code 3) — 2026-10-14 — Protection mode toggle + voice transparency + polish
+
+### What went in
+
+- `settings/ProtectionMode.kt` (new): `protection_mode` boolean in
+  `baloch_settings` prefs, default true; single read/write point for UI
+  and MainActivity.
+- `MainActivity.kt`: unconditional FLAG_SECURE replaced with
+  `applyProtectionMode()` — set when Protection mode is ON, cleared when
+  OFF. Called in onCreate AND onResume (toggle takes effect on return
+  from Settings, no restart).
+- `ui/SettingsScreen.kt`: "Protection mode" toggle row at the top of the
+  Privacy & Permissions section; "Test voice input" nav row in the Voice
+  section with a calm amber NoticeCard showing the heard text or failure
+  reason; `SettingsState.protectionMode` / `voiceTestResult` fields;
+  `SettingsActions.onProtectionModeChange` / `onTestVoiceInput`.
+- `voice/VoiceInput.kt`: `describeError(code)` maps every
+  SpeechRecognizer error + "unavailable"/"empty" to a human-readable,
+  en-GB reason; new `isOfflineReady()` exposes Vosk model provisioning.
+- `ui/BalochViewModel.kt`: `_lastVoiceError` StateFlow; `startVoice()`
+  no longer gates on the platform recogniser when the offline model is
+  ready (this was wrongly killing voice on devices without Google voice
+  services); onError now surfaces the real reason instead of MISHEARD /
+  silence. Removed the now-unused MISHEARD template.
+- `ui/MainScreen.kt`: `JarvisVoicePanel` takes `lastVoiceError` and shows
+  it as a calm notice under the mic button.
+- Polish: `ui/components/Polish.kt` (new) — `balochSwitchColors()`,
+  `SettingsDivider()`, `NoticeCard` (INFO/WARN tones), `EmptyState`;
+  `SettingsToggleRow` is whole-row tappable (Switch display-only, proper
+  Role.Switch); Memory + Schedule empty states use `EmptyState`.
+- Version bump 1.0.1 (code 2) → 1.0.2 (code 3) in build.gradle +
+  VersionInfo.kt (kept in agreement per the release rules).
+- `.github/workflows/build-apk.yml`: the CI release step now names the
+  release per the UpdateChecker factory contract — `v{version} (code {n})`
+  derived from VersionInfo.kt — which is what makes the in-app updater
+  actually see new versions. (v1.0.0/v1.0.1 releases were named
+  "Baloch vX.Y.Z", which the updater's name pattern cannot parse — that
+  is why "check for updates" showed nothing.)
+
+### Known edges (fix or carry forward)
+
+- `describeError` strings are English-only (en-GB); the surrounding voice
+  pipeline already localises everything else — localising these is a
+  future pass.
+- The voice self-test runs a real 5s listen; it never processes commands.
+
 ## v1.0.1 (code 2) — 2026-10-14 — JARVIS voice mode + branded notifications
 
 ### What went in

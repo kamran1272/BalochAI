@@ -63,6 +63,8 @@ import com.baloch.ai.ui.components.BalochOrb
 import com.baloch.ai.ui.components.ChatBubble
 import com.baloch.ai.ui.components.ConfirmDialog
 import com.baloch.ai.ui.components.ModeToggle
+import com.baloch.ai.ui.components.NoticeCard
+import com.baloch.ai.ui.components.NoticeTone
 import com.baloch.ai.ui.components.OrbState
 import com.baloch.ai.ui.components.ScanlineOverlay
 import com.baloch.ai.ui.components.TypingIndicator
@@ -207,6 +209,7 @@ private fun MainContent(viewModel: BalochViewModel) {
     val exportRequest by viewModel.exportRequest.collectAsState()
     val importRequest by viewModel.importRequest.collectAsState()
     val voiceMode by viewModel.voiceMode.collectAsState()
+    val lastVoiceError by viewModel.lastVoiceError.collectAsState()
     var showLangPicker by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
@@ -430,6 +433,7 @@ private fun ChatModeScreen(viewModel: BalochViewModel) {
                     listening = listening,
                     orbState = orbState,
                     lang = lang,
+                    lastVoiceError = lastVoiceError,
                     onMicTap = ::onMicTap,
                     modifier = Modifier.weight(1f),
                 )
@@ -601,6 +605,7 @@ private fun JarvisVoicePanel(
     listening: Boolean,
     orbState: OrbState,
     lang: BalochLanguage,
+    lastVoiceError: String? = null,
     onMicTap: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -631,6 +636,15 @@ private fun JarvisVoicePanel(
             color = BalochCyan,
             fontSize = 16.sp,
         )
+        // Last voice failure, stated calmly — a hint, not an alarm.
+        if (!listening && lastVoiceError != null) {
+            Spacer(Modifier.height(12.dp))
+            NoticeCard(
+                text = lastVoiceError,
+                tone = NoticeTone.WARN,
+                modifier = Modifier.padding(horizontal = 24.dp),
+            )
+        }
         Spacer(Modifier.height(28.dp))
         IconButton(
             onClick = onMicTap,

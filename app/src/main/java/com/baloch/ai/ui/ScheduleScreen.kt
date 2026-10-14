@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.baloch.ai.schedule.Recurrence
 import com.baloch.ai.schedule.ScheduledTask
 import com.baloch.ai.ui.components.BackChevron
+import com.baloch.ai.ui.components.EmptyState
 import com.baloch.ai.ui.theme.BalochAmber
 import com.baloch.ai.ui.theme.BalochBlack
 import com.baloch.ai.ui.theme.BalochCyan
@@ -82,17 +83,12 @@ fun ScheduleScreen(
         Spacer(Modifier.height(16.dp))
 
         if (tasks.isEmpty()) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "No scheduled tasks, sir.",
-                    color = BalochTextDim,
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 15.sp,
-                )
-            }
+            EmptyState(
+                icon = "⏰",
+                title = "Nothing scheduled, sir",
+                hint = "Say “remind me in 20 minutes” or “wake me at 7” — " +
+                    "I'll keep the schedule.",
+            )
         } else {
             LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 items(tasks, key = { it.id }) { task ->

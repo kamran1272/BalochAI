@@ -1,0 +1,26 @@
+<!-- ============================================================
+     CALLER ID — paste into app/src/main/AndroidManifest.xml
+     (Parent: merge with the existing manifest; do NOT replace it.)
+     ============================================================ -->
+
+<!-- Incoming-call detection without the screening role (Path B). -->
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+<!-- Recent-calls list on the Caller ID screen. -->
+<uses-permission android:name="android.permission.READ_CALL_LOG" />
+
+<!-- Name announcement for saved contacts (already used by DeviceActions). -->
+<uses-permission android:name="android.permission.READ_CONTACTS" />
+
+<!-- Path A: system call screening. The framework binds this service only
+     when Baloch holds ROLE_CALL_SCREENING (granted once by Kamran from
+     the Call Log screen, API 29+). android:permission="BIND_SCREENING_SERVICE"
+     is REQUIRED — without it the service will not bind. -->
+<service
+    android:name=".callerid.BalochCallScreeningService"
+    android:permission="android.permission.BIND_SCREENING_SERVICE"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="android.telecom.CallScreeningService" />
+    </intent-filter>
+</service>

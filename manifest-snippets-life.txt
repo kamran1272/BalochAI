@@ -1,0 +1,68 @@
+<!-- ============================================================
+     LIFE FEATURES — manifest additions for Mobile Baloch
+     (merge into app/src/main/AndroidManifest.xml by the parent)
+
+     Features: focus-mode alarms, geofence receivers, boot re-register,
+     location reminders, SOS SMS.
+     ============================================================ -->
+
+<!-- ===== PERMISSIONS ===== -->
+
+<!-- Location reminders (geofences). Fine location is needed to register
+     geofences; background location (API 29+) is needed so reminders
+     fire when the app isn't in the foreground. Request flow:
+       1. ACCESS_FINE_LOCATION (runtime, foreground)
+       2. ACCESS_BACKGROUND_LOCATION (runtime, API 29+ — the system
+          sends the user to Settings > Location > Allow all the time) -->
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+<!-- SOS SMS to the ICE contact (RISKY — always confirmed first). -->
+<uses-permission android:name="android.permission.SEND_SMS" />
+
+<!-- Prayer/focus notifications (runtime on API 33+). -->
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+<!-- Focus-mode exact alarms (API 31+). Graceful fallback to inexact
+     alarms when not granted — FocusManager handles both paths. -->
+<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+<!-- Boot re-registration of geofences. -->
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+<!-- Hardware: rotation-vector compass is optional — phones without it
+     get the static 257° fallback text instead of the live dial. -->
+<uses-feature android:name="android.hardware.sensor.compass" android:required="false" />
+
+
+<!-- ===== RECEIVERS (inside <application>) ===== -->
+
+<!-- Focus-mode Pomodoro boundaries (RTC_WAKEUP alarms). -->
+<receiver
+    android:name="com.baloch.ai.life.FocusAlarmReceiver"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="com.baloch.ai.life.FOCUS_END" />
+        <action android:name="com.baloch.ai.life.BREAK_END" />
+    </intent-filter>
+</receiver>
+
+<!-- Geofence transitions (enter/dwell → reminder notification). -->
+<receiver
+    android:name="com.baloch.ai.life.GeofenceTransitionReceiver"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="com.baloch.ai.life.GEOFENCE_TRANSITION" />
+    </intent-filter>
+</receiver>
+
+<!-- Re-register geofences after reboot (geofences don't survive restarts). -->
+<receiver
+    android:name="com.baloch.ai.life.BootReceiver"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+    </intent-filter>
+</receiver>

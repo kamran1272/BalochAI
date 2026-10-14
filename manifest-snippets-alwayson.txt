@@ -1,0 +1,44 @@
+================================================================
+BALOCH — ALWAYS-ON VOICE: AndroidManifest.xml snippets
+================================================================
+Paste the permission block INSIDE <manifest>, next to the other
+<uses-permission> lines. Paste the <service> block INSIDE <application>,
+next to the other <service> entries. Do NOT change anything else.
+
+----------------------------------------------------------------
+1) PERMISSIONS — paste inside <manifest> (with the other permissions)
+----------------------------------------------------------------
+
+    <!-- Always-on voice: foreground mic service (Android 14 rule) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <!-- Keeps the CPU awake for the wake-word loop with the screen off -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Full-screen confirm notification for risky commands (screen on) -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <!-- Battery-optimisation exemption prompt (see ALWAYSON-DOCS-ADD.md) -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+----------------------------------------------------------------
+2) SERVICE — paste inside <application> (with the other services)
+----------------------------------------------------------------
+
+        <!-- Always-on voice: offline "hey baloch" wake-word listener.
+             Runs even with the screen off / phone locked. -->
+        <service
+            android:name=".service.BalochListenerService"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
+
+----------------------------------------------------------------
+NOTES
+----------------------------------------------------------------
+- android:foregroundServiceType="microphone" is REQUIRED on targetSdk 34:
+  starting a mic foreground service without it throws
+  SecurityException (ForegroundServiceStartNotAllowedException family).
+- android:exported="false": only the Baloch app itself may start/stop it.
+- RECORD_AUDIO and POST_NOTIFICATIONS are already declared elsewhere in
+  the manifest; both are runtime permissions the user must grant.
+- No <intent-filter> on purpose — the service is started only via
+  explicit intents (BalochListenerService.start/stop()).
+================================================================

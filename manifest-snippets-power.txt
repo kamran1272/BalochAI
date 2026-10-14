@@ -1,0 +1,77 @@
+POWER-FEATURES MANIFEST SNIPPETS — merge into app/src/main/AndroidManifest.xml
+================================================================================
+DO NOT create a second manifest. Insert each block at the marked point.
+RECORD_AUDIO and POST_NOTIFICATIONS already exist — do NOT re-add them.
+
+--------------------------------------------------------------------------------
+BLOCK 1 — permissions. INSERTION POINT: right after the existing
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+line (in the permissions group at the top).
+
+    <!-- Driving mode: see the SMS to auto-reply (body parsed from the
+         broadcast PDUs — READ_SMS is NOT needed) -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <!-- Driving mode: send the "I'm driving" auto-reply -->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- Driving mode (optional, declared for future auto-detect):
+         ACTIVITY_RECOGNITION is NOT used by the current build — driving
+         mode is a manual toggle + auto-off timer by design. Declared so a
+         future auto-detect can light up without a manifest change. -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
+--------------------------------------------------------------------------------
+BLOCK 2 — SMS receiver. INSERTION POINT: inside <application>, right after
+the existing receiver blocks:
+
+    <!-- Driving mode: auto-reply + read-aloud on incoming SMS.
+         exported=true is REQUIRED on Android 12+ for SMS_RECEIVED.
+         The receiver no-ops unless driving mode is ON. -->
+    <receiver
+        android:name=".power.DrivingSmsReceiver"
+        android:exported="true"
+        android:permission="android.permission.BROADCAST_SMS">
+        <intent-filter android:priority="999">
+            <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+        </intent-filter>
+    </receiver>
+
+--------------------------------------------------------------------------------
+BLOCK 3 — charge receiver. INSERTION POINT: inside <application>, after
+the DrivingSmsReceiver block:
+
+    <!-- Charge-complete alert: plug-in / unplug announcements. -->
+    <receiver
+        android:name=".power.ChargeAlertReceiver"
+        android:exported="false">
+        <intent-filter>
+            <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+            <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+        </intent-filter>
+    </receiver>
+
+--------------------------------------------------------------------------------
+BLOCK 4 — notification-listener service. INSERTION POINT: inside
+<application>, after the receiver blocks:
+
+    <!-- Driving mode: reads other apps' notifications aloud while driving.
+         Needs BIND_NOTIFICATION_LISTENER and the user granting
+         "Notification access" once in Android Settings; without it the
+         service never starts and only SMS are read aloud. -->
+    <service
+        android:name=".power.DrivingNotifications"
+        android:exported="false"
+        android:permission="android.permission.BIND_NOTIFICATION_LISTENER">
+        <intent-filter>
+            <action android:name="android.service.notification.NotificationListenerService" />
+        </intent-filter>
+    </service>
+
+--------------------------------------------------------------------------------
+RUNTIME PERMISSIONS (request in-app, NOT in the manifest):
+  - RECEIVE_SMS + SEND_SMS → ask when driving mode is first switched ON.
+  - RECORD_AUDIO → already declared; ask when the meeting recorder is
+    first switched ON (or on "meeting record karo").
+  - POST_NOTIFICATIONS → already declared; needed for all ten alerts.
+  - "Notification access" → NOT a runtime permission; deep-link the user
+    to Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS from the driving
+    section when they enable read-aloud.

@@ -1,0 +1,41 @@
+SCHEDULED-TASK MANIFEST SNIPPETS — merge into app/src/main/AndroidManifest.xml
+================================================================================
+DO NOT create a second manifest. Insert each block at the marked point.
+
+--------------------------------------------------------------------------------
+BLOCK 1 — permission. INSERTION POINT: right after the existing
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+line (in the "<!-- Exact alarms -->" group).
+
+    <!-- Re-arm scheduled tasks after reboot -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+--------------------------------------------------------------------------------
+BLOCK 2 — receivers. INSERTION POINT: inside <application>, right after the
+existing ReminderReceiver block:
+
+        <!-- Fires scheduled reminders -->
+        <receiver
+            android:name=".engine.ReminderReceiver"
+            android:exported="false" />
+
+    <!-- One-shot scheduled tasks (exact AlarmManager alarms) -->
+    <receiver
+        android:name=".schedule.TaskFireReceiver"
+        android:exported="false" />
+
+    <!-- Re-arms all enabled scheduled tasks after a reboot -->
+    <receiver
+        android:name=".schedule.RescheduleReceiver"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+        </intent-filter>
+    </receiver>
+
+Notes:
+- TaskFireReceiver must stay exported="false": only Baloch's own alarms fire it.
+- RescheduleReceiver must be exported="true": the SYSTEM sends BOOT_COMPLETED.
+- No service declaration needed: TaskWorker runs inside WorkManager's own
+  infrastructure (work-runtime-ktx 2.9.0 is already a dependency).
+- SCHEDULE_EXACT_ALARM is already declared; no new alarm permission needed.

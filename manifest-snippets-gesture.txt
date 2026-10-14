@@ -1,0 +1,48 @@
+<!-- ============================================================
+  GESTURE CONTROL — manifest snippets for the parent / manifest owner.
+  Baloch does NOT edit AndroidManifest.xml itself (owned by another
+  builder). Merge the block below inside the <manifest> / <application>
+  elements as marked.
+  ============================================================ -->
+
+<!-- ── Inside <manifest>, next to the other <uses-permission> lines ── -->
+
+<!-- Camera gestures: foreground service itself (normal permission). -->
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<!-- API 34+: REQUIRED to run a foreground service of type "camera".
+     Without this, startForeground(FOREGROUND_SERVICE_TYPE_CAMERA) throws
+     SecurityException on Android 14+. (Normal permission, auto-granted.) -->
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+<!-- NOTE: android.permission.CAMERA and INTERNET are already declared.
+     Sensor gestures need NO new permissions at all (proximity,
+     accelerometer and significant-motion are normal sensor APIs;
+     AudioManager.isMusicActive() needs none either). -->
+
+<!-- ── Inside <application>, next to the other <service> entries ── -->
+
+<!-- Camera hand-gesture pipeline. exported=false: only Baloch binds it.
+     foregroundServiceType="camera" matches the type passed to
+     startForeground() on API 29+ (required pairing on API 34). -->
+<service
+    android:name=".gesture.GestureControlService"
+    android:exported="false"
+    android:foregroundServiceType="camera" />
+
+<!-- Sensor gestures (wave / flip / shake / pick-up). No service type:
+     it uses only normal sensor APIs, so the generic foreground service
+     declaration is enough. exported=false. -->
+<service
+    android:name=".gesture.SensorGestureService"
+    android:exported="false" />
+
+<!-- ============================================================
+  DESIGN NOTES (why foreground, not bound-only):
+  - The persistent "👆 Gesture control active" notification IS the
+    camera-active privacy indicator Kamran ordered — a foreground
+    service is the honest way to hold the camera with a visible indicator.
+  - Sensor gestures also run foreground so the proximity wave keeps
+    working with the screen off (its killer feature).
+  - Background-start restriction (API 34): both services are started
+    from user actions (Settings toggle, voice command, Gesture Lab) or
+    while the app is foregrounded — never from a background receiver.
+  ============================================================ -->

@@ -1,0 +1,58 @@
+UPDATES MANIFEST SNIPPETS — merge into app/src/main/AndroidManifest.xml
+===============================================================================
+DO NOT create a second manifest. Insert each block at the marked point.
+
+--------------------------------------------------------------------------------
+BLOCK 1 — permissions. INSERTION POINT: with the other <uses-permission>
+lines, near the top of the manifest (before <application>).
+
+    <!-- Check the GitHub releases feed for updates -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Fire the system APK install prompt (API 26+). The OS still shows
+         its own Install/Cancel dialog — this permission never installs
+         anything silently. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+--------------------------------------------------------------------------------
+BLOCK 2 — FileProvider. INSERTION POINT: inside <application>, alongside
+the other <provider> declarations (or at the end of <application> if
+there are none yet).
+
+        <!-- Serves the downloaded update APK to the system installer.
+             The APK itself lives in public Downloads/BalochAI/ (written
+             there by DownloadManager, no storage permission needed). -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+--------------------------------------------------------------------------------
+BLOCK 3 — NEW FILE: app/src/main/res/xml/file_paths.xml
+(Create res/xml/ if it does not exist.)
+
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- APKs downloaded by UpdateChecker into Downloads/BalochAI/.
+         <external-path> covers /storage/emulated/0/Download/ on all
+         API levels; the sub-path keeps Baloch's APKs in one folder. -->
+    <external-path
+        name="baloch_downloads"
+        path="Download/" />
+</paths>
+
+Notes:
+- The download-completion receiver is registered DYNAMICALLY
+  (UpdateChecker.downloadAndPromptInstall) with RECEIVER_NOT_EXPORTED
+  on API 33+ — no <receiver> entry needed in the manifest.
+- REQUEST_INSTALL_PACKAGES triggers a Play-Console declaration IF the
+  app is ever published on Play; for sideloaded/factory APKs it is just
+  the API 26+ gate for canRequestPackageInstalls().
+- No INTERNET permission is added here: the app already declares it
+  (web search, Vosk model download). If it did not, add
+  <uses-permission android:name="android.permission.INTERNET" />.

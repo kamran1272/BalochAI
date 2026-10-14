@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- APKs downloaded by UpdateChecker into Downloads/BalochAI/. -->
+    <external-path
+        name="baloch_downloads"
+        path="Download/" />
+</paths>

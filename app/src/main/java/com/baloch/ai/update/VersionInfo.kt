@@ -19,6 +19,6 @@ package com.baloch.ai.update
  *    notes to VERSIONS.md (both at the project root).
  */
 object VersionInfo {
-    const val APP_VERSION_NAME = "1.0.1"
-    const val APP_VERSION_CODE = 2
+    const val APP_VERSION_NAME = "1.0.2"
+    const val APP_VERSION_CODE = 3
 }

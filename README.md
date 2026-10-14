@@ -2,16 +2,16 @@
 
 **Your personal JARVIS for your whole Android device.** A holographic, voice-first AI assistant that lives on your phone — 100% on-device, trilingual, and always at your service, sir.
 
-> Visual identity: **Holographic Cyan — Iron Man style.** Deep obsidian surfaces, controlled cyan glow, animated holographic orb.
+> Visual identity: **Holographic Cyan — Iron Man style.** Gunmetal mechanical ring, glowing cyan energy core, animated holographic orb.
 
 ---
 
 ## 🎨 Visual identity
 
-Built around the official **Obsidian Cube** logo — deep black facets, glowing cyan core.
+Built around the official **Arc Reactor** logo — a glowing cyan **B** at the heart of a mechanical energy core, Iron Man style.
 
 <p align="center">
-  <img src="docs/images/logo-obsidian-cube.webp" alt="Baloch Obsidian Cube logo" width="180" />
+  <img src="docs/images/logo-obsidian-cube.webp" alt="Baloch Arc Reactor logo" width="180" />
 </p>
 
 | Splash | Main | Settings | Memory |
